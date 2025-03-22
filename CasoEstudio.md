@@ -86,7 +86,7 @@ o    El gestor de proyecto organiza una reunión inicial para discutir los ob
 
   >-Construir un sistema para al gestión de la biblioteca del DUOC Puerto Montt.
 
-**- Ambito:**
+**Ambito:**
 
 >  - El sistema va a permitir registrar la pérdida de libros.
 
@@ -96,11 +96,11 @@ o    El gestor de proyecto organiza una reunión inicial para discutir los ob
 
 **Alcance:**
 
->  **- Tareas:** Analisis de Requisitos, Reuniones, Ingresar libros a la BD, programar la aplicación, Testing.
+>  - **Tareas:** Analisis de Requisitos, Reuniones, Ingresar libros a la BD, programar la aplicación, Testing.
 
->  **- Tiempo de Duración del proyecto:** 6 meses.
+>  - **Tiempo de Duración del proyecto:** 6 meses.
 
->  **- Recursos:** Computadores, Servidor, Hosting.
+>  - **Recursos:** Computadores, Servidor, Hosting.
 
 o    Utilizar Trello para planificar y asignar tareas basadas en los requisitos documentados.
 
