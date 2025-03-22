@@ -6,21 +6,19 @@
 
 **1. Presentación del Caso (5 minutos):**
 
-**- Contexto del Caso:**
-
+**Contexto del Caso:**
 - La biblioteca de una universidad necesita modernizar su sistema de gestión para mejorar la eficiencia y la satisfacción del usuario.
 - Problemas actuales: pérdida de libros, dificultades en la búsqueda de materiales, largas colas para préstamos y devoluciones.
 
-**- Requisitos del Cliente:**
+**Requisitos del Cliente:**
   - Gestión de Usuarios, Gestión de Libros, Préstamo y Devolución, Catálogo en Línea, Reportes y Estadísticas.
 
-**- Roles y Responsabilidades:**
+**Roles y Responsabilidades:**
   - Gestor de Proyecto, Analista, Diseñador, Tester.
 
 **2. Asignación de Equipos y Roles (5 minutos):**
   - Formar equipos de 3-4 integrantes.
   - Asignar roles dentro de cada equipo.
-
     > - Gestor de Proyecto: Fabián Lecaros
     > - Analista: Héctor Águila
     > - Diseñador: Franco Ruz
