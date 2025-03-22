@@ -195,8 +195,6 @@ El cliente (representado por un instructor o un estudiante en el rol de bibliote
   · El gestor de proyecto asegura que todos los requisitos han sido probados y validados.
 
 **5. Fase de Entrega:**
-    · El gestor de proyecto organiza una reunión de revisión final con el cliente.
-    
-    · El equipo presenta el sistema al cliente y recibe feedback.
-    
-    · El gestor de proyecto documenta las lecciones aprendidas y prepara el informe de cierre del proyecto.
+  - El gestor de proyecto organiza una reunión de revisión final con el cliente.
+  - El equipo presenta el sistema al cliente y recibe feedback.
+  - El gestor de proyecto documenta las lecciones aprendidas y prepara el informe de cierre del proyecto.
