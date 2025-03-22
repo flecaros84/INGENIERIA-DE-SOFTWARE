@@ -28,13 +28,13 @@ o   Formar equipos de 3-4 integrantes.
 
 o   Asignar roles dentro de cada equipo.
 
-Gestor de Proyecto: Fabián Lecaros
+  - Gestor de Proyecto: Fabián Lecaros
 
-Analista: Héctor Águila
+  - Analista: Héctor Águila
 
-Diseñador: Franco Ruz
+  - Diseñador: Franco Ruz
 
-Tester: Vicente Barrera
+  - Tester: Vicente Barrera
 
 **Desarrollo (105 minutos)**
 
@@ -42,39 +42,39 @@ Tester: Vicente Barrera
 
 **1. Recolección de Requisitos (20 minutos):**
 
-o    El analista se reúne con el cliente (instructor o estudiante en el rol de bibliotecario jefe) para obtener detalles adicionales y clarificar requisitos.
+  o  El analista se reúne con el cliente (instructor o estudiante en el rol de bibliotecario jefe) para obtener detalles adicionales y clarificar requisitos.
 
-o    Documentar los requisitos detallados.
+  o Documentar los requisitos detallados.
 
-Requisitos Adicionales
+**Requisitos Adicionales**
 
-- Seguridad y autenticación:
+**- Seguridad y autenticación:**
 
   - Ingreso con correo y contraseña.
 
   - Encriptación de datos sensibles.
 
-- Historial de préstamos:
+**- Historial de préstamos:**
 
   - Registro de libros solicitados y devueltos por cada usuario.
 
-- Gestión de multas:
+**- Gestión de multas:**
 
   - Posibilidad de registrar sanciones por retrasos en la devolución.
 
-- Reporte de disponibilidad:
+**- Reporte de disponibilidad:**
 
   - Indicar si un libro está prestado o disponible.
 
-- Exportación de informes:
+**- Exportación de informes:**
 
   - Generación de reportes en PDF o Excel para control de inventario.
 
-- Búsqueda avanzada en el catálogo:
+**- Búsqueda avanzada en el catálogo:**
 
   - Filtros por título, autor, categoría y disponibilidad.
 
-- Registro de actividad del sistema:
+**- Registro de actividad del sistema:**
 
   - Seguimiento de acciones realizadas por los bibliotecarios y administradores.
 
@@ -82,25 +82,25 @@ Requisitos Adicionales
 
 o    El gestor de proyecto organiza una reunión inicial para discutir los objetivos y el alcance del proyecto.
 
-- Objetivos:
+**- Objetivos:**
 
-Construir un sistema para al gestión de la biblioteca del DUOC Puerto Montt.
+    Construir un sistema para al gestión de la biblioteca del DUOC Puerto Montt.
 
-- Ambito:
+**- Ambito:**
 
-El sistema va a permitir registrar la pérdida de libros.
+    - El sistema va a permitir registrar la pérdida de libros.
 
-El sistema no va a evitar la pérdida o robo de libros.
+    - El sistema no va a evitar la pérdida o robo de libros.
 
-El sistema será gestionado por personas, no incluyendo robots que automatizen la entrega y recepción de libros.
+    - El sistema será gestionado por personas, no incluyendo robots que automatizen la entrega y recepción de libros.
 
-Alcance:
+**Alcance:**
 
-Tareas: Analisis de Requisitos, Reuniones, Ingresar libros a la BD, programar la aplicación, Testing.
+  **- Tareas:** Analisis de Requisitos, Reuniones, Ingresar libros a la BD, programar la aplicación, Testing.
 
-Tiempo de Duración del proyecto: 6 meses.
+  **- Tiempo de Duración del proyecto:** 6 meses.
 
-Recursos: Computadores, Servidor, Hosting.
+  **- Recursos:** Computadores, Servidor, Hosting.
 
 o    Utilizar Trello para planificar y asignar tareas basadas en los requisitos documentados.
 
@@ -108,35 +108,35 @@ o    Utilizar Trello para planificar y asignar tareas basadas en los requisit
 
 **1. Diseño Preliminar (20 minutos):**
 
-o    El diseñador elabora el diseño preliminar del sistema, incluyendo la arquitectura, el modelo de datos, y los mockups de la interfaz de usuario (UI/UX).
+  o El diseñador elabora el diseño preliminar del sistema, incluyendo la arquitectura, el modelo de datos, y los mockups de la interfaz de usuario (UI/UX).
 
-o    Preparar diagramas UML necesarios (diagramas de casos de uso).
+  o Preparar diagramas UML necesarios (diagramas de casos de uso).
 
 **2. Revisión y Ajustes (15 minutos):**
 
-o    El gestor de proyecto coordina una revisión del diseño preliminar con el cliente para obtener feedback.
+  o El gestor de proyecto coordina una revisión del diseño preliminar con el cliente para obtener feedback.
 
-o    El diseñador ajusta el diseño según el feedback recibido.
+  o El diseñador ajusta el diseño según el feedback recibido.
 
 **Bloque 3: Fase de Validación y Discusión en Plenario (35 minutos)**
 
 **1. Validación del Diseño y Especificaciones (20 minutos):**
 
-o    El tester desarrolla un plan de pruebas y casos de prueba basados en los requisitos documentados (sin ejecución real de pruebas).
+  o El tester desarrolla un plan de pruebas y casos de prueba basados en los requisitos documentados (sin ejecución real de pruebas).
 
-o    Asegurar que todas las especificaciones cumplen con los requisitos del cliente.
+  o Asegurar que todas las especificaciones cumplen con los requisitos del cliente.
 
 **2. Preparación de la Entrega (5 minutos):**
 
-o    El equipo prepara la presentación final del sistema al cliente.
+  o El equipo prepara la presentación final del sistema al cliente.
 
-o    Documentar las lecciones aprendidas y preparar el informe de cierre del proyecto.
+  o Documentar las lecciones aprendidas y preparar el informe de cierre del proyecto.
 
 **3. Presentación y Discusión en Plenario (10 minutos):**
 
-o    Cada equipo presenta su solución al plenario.
+  o Cada equipo presenta su solución al plenario.
 
-o    Se realiza una sesión de retroalimentación de pares, intercambiando opiniones y críticas constructivas.
+  o Se realiza una sesión de retroalimentación de pares, intercambiando opiniones y críticas constructivas.
 
 
 
@@ -144,23 +144,23 @@ Cierre (10 minutos)
 
 **Retroalimentación del Instructor (10 minutos):**
 
-o    El docente proporciona feedback final, destacando los puntos fuertes y las áreas de mejora.
+  o El docente proporciona feedback final, destacando los puntos fuertes y las áreas de mejora.
 
-o    Cierre de la actividad y reflexión sobre las lecciones aprendidas.
+  o Cierre de la actividad y reflexión sobre las lecciones aprendidas.
 
 
 
 **Entregables:**
 
-·        Documento de especificaciones de requisitos.
+  · Documento de especificaciones de requisitos.
 
-·        Diseño del sistema (diagramas UML, mockups de UI/UX).
+  · Diseño del sistema (diagramas UML, mockups de UI/UX).
 
-·        Plan de proyecto y cronograma.
+  · Plan de proyecto y cronograma.
 
-·        Casos de prueba y reporte de pruebas.
+  · Casos de prueba y reporte de pruebas.
 
-·        Informe final del proyecto.
+  · Informe final del proyecto.
 
 
 
