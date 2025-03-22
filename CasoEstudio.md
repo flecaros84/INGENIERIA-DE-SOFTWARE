@@ -48,35 +48,35 @@ o   Asignar roles dentro de cada equipo.
 
 **Requisitos Adicionales**
 
-**- Seguridad y autenticación:**
+**>- Seguridad y autenticación:**
 
-  - Ingreso con correo y contraseña.
+  >- Ingreso con correo y contraseña.
 
-  - Encriptación de datos sensibles.
+  >- Encriptación de datos sensibles.
 
-**- Historial de préstamos:**
+**>- Historial de préstamos:**
 
-  - Registro de libros solicitados y devueltos por cada usuario.
+  >- Registro de libros solicitados y devueltos por cada usuario.
 
-**- Gestión de multas:**
+**>- Gestión de multas:**
 
-  - Posibilidad de registrar sanciones por retrasos en la devolución.
+  >- Posibilidad de registrar sanciones por retrasos en la devolución.
 
-**- Reporte de disponibilidad:**
+**>- Reporte de disponibilidad:**
 
-  - Indicar si un libro está prestado o disponible.
+  >- Indicar si un libro está prestado o disponible.
 
-**- Exportación de informes:**
+**>- Exportación de informes:**
 
-  - Generación de reportes en PDF o Excel para control de inventario.
+  >- Generación de reportes en PDF o Excel para control de inventario.
 
-**- Búsqueda avanzada en el catálogo:**
+**>- Búsqueda avanzada en el catálogo:**
 
-  - Filtros por título, autor, categoría y disponibilidad.
+  >- Filtros por título, autor, categoría y disponibilidad.
 
-**- Registro de actividad del sistema:**
+**>- Registro de actividad del sistema:**
 
-  - Seguimiento de acciones realizadas por los bibliotecarios y administradores.
+  >- Seguimiento de acciones realizadas por los bibliotecarios y administradores.
 
 **2. Planificación (15 minutos):**
 
@@ -84,23 +84,23 @@ o    El gestor de proyecto organiza una reunión inicial para discutir los ob
 
 **- Objetivos:**
 
-    Construir un sistema para al gestión de la biblioteca del DUOC Puerto Montt.
+  >-Construir un sistema para al gestión de la biblioteca del DUOC Puerto Montt.
 
 **- Ambito:**
 
-    - El sistema va a permitir registrar la pérdida de libros.
+  >- El sistema va a permitir registrar la pérdida de libros.
 
-    - El sistema no va a evitar la pérdida o robo de libros.
+  >- El sistema no va a evitar la pérdida o robo de libros.
 
-    - El sistema será gestionado por personas, no incluyendo robots que automatizen la entrega y recepción de libros.
+  >- El sistema será gestionado por personas, no incluyendo robots que automatizen la entrega y recepción de libros.
 
 **Alcance:**
 
-  **- Tareas:** Analisis de Requisitos, Reuniones, Ingresar libros a la BD, programar la aplicación, Testing.
+  **>- Tareas:** Analisis de Requisitos, Reuniones, Ingresar libros a la BD, programar la aplicación, Testing.
 
-  **- Tiempo de Duración del proyecto:** 6 meses.
+  **>- Tiempo de Duración del proyecto:** 6 meses.
 
-  **- Recursos:** Computadores, Servidor, Hosting.
+  **>- Recursos:** Computadores, Servidor, Hosting.
 
 o    Utilizar Trello para planificar y asignar tareas basadas en los requisitos documentados.
 
