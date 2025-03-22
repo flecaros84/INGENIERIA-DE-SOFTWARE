@@ -60,8 +60,8 @@
 **2. Planificación (15 minutos):**
   - El gestor de proyecto organiza una reunión inicial para discutir los objetivos y el alcance del proyecto.
 
-**- Objetivos:**
-  >-Construir un sistema para al gestión de la biblioteca del DUOC Puerto Montt.
+**Objetivos:**
+>  - Construir un sistema para al gestión de la biblioteca del DUOC Puerto Montt.
 
 **Ambito:**
 >  - El sistema va a permitir registrar la pérdida de libros.
