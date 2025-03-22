@@ -28,13 +28,13 @@ o   Formar equipos de 3-4 integrantes.
 
 o   Asignar roles dentro de cada equipo.
 
-  > Gestor de Proyecto: Fabián Lecaros
+  > - Gestor de Proyecto: Fabián Lecaros
 
-  > Analista: Héctor Águila
+  > - Analista: Héctor Águila
 
-  > Diseñador: Franco Ruz
+  > - Diseñador: Franco Ruz
 
-  > Tester: Vicente Barrera
+  > - Tester: Vicente Barrera
 
 **Desarrollo (105 minutos)**
 
