@@ -88,19 +88,19 @@ o    El gestor de proyecto organiza una reunión inicial para discutir los ob
 
 **- Ambito:**
 
-  >- El sistema va a permitir registrar la pérdida de libros.
+>  - El sistema va a permitir registrar la pérdida de libros.
 
-  >- El sistema no va a evitar la pérdida o robo de libros.
+>  - El sistema no va a evitar la pérdida o robo de libros.
 
-  >- El sistema será gestionado por personas, no incluyendo robots que automatizen la entrega y recepción de libros.
+>  - El sistema será gestionado por personas, no incluyendo robots que automatizen la entrega y recepción de libros.
 
 **Alcance:**
 
-  **>- Tareas:** Analisis de Requisitos, Reuniones, Ingresar libros a la BD, programar la aplicación, Testing.
+>**- Tareas:** Analisis de Requisitos, Reuniones, Ingresar libros a la BD, programar la aplicación, Testing.
 
-  **>- Tiempo de Duración del proyecto:** 6 meses.
+>**- Tiempo de Duración del proyecto:** 6 meses.
 
-  **>- Recursos:** Computadores, Servidor, Hosting.
+>**- Recursos:** Computadores, Servidor, Hosting.
 
 o    Utilizar Trello para planificar y asignar tareas basadas en los requisitos documentados.
 
