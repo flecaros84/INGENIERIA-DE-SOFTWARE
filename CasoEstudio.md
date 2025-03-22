@@ -2,11 +2,11 @@
 
 **1. Instrucciones**
 
-  **Inicio (10 minutos)**
+**Inicio (10 minutos)**
 
 **1. Presentación del Caso (5 minutos):**
 
-  **o   Contexto del Caso:**
+**o   Contexto del Caso:**
 
     - La biblioteca de una universidad necesita modernizar su sistema de gestión para mejorar la eficiencia y la satisfacción del usuario.
 
