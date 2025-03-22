@@ -48,17 +48,17 @@ o   Asignar roles dentro de cada equipo.
 
 **Requisitos Adicionales**
 
-**>- Seguridad y autenticación:**
+**- Seguridad y autenticación:**
 
   >- Ingreso con correo y contraseña.
 
   >- Encriptación de datos sensibles.
 
-**>- Historial de préstamos:**
+**- Historial de préstamos:**
 
   >- Registro de libros solicitados y devueltos por cada usuario.
 
-**>- Gestión de multas:**
+**- Gestión de multas:**
 
   >- Posibilidad de registrar sanciones por retrasos en la devolución.
 
@@ -66,15 +66,15 @@ o   Asignar roles dentro de cada equipo.
 
   >- Indicar si un libro está prestado o disponible.
 
-**>- Exportación de informes:**
+**- Exportación de informes:**
 
   >- Generación de reportes en PDF o Excel para control de inventario.
 
-**>- Búsqueda avanzada en el catálogo:**
+**- Búsqueda avanzada en el catálogo:**
 
   >- Filtros por título, autor, categoría y disponibilidad.
 
-**>- Registro de actividad del sistema:**
+**- Registro de actividad del sistema:**
 
   >- Seguimiento de acciones realizadas por los bibliotecarios y administradores.
 
