@@ -48,7 +48,7 @@ o   Asignar roles dentro de cada equipo.
 
 **Requisitos Adicionales**
 
-**- Seguridad y autenticación:**
+  - **Seguridad y autenticación:**
 
   >- Ingreso con correo y contraseña.
 
@@ -62,7 +62,7 @@ o   Asignar roles dentro de cada equipo.
 
   >- Posibilidad de registrar sanciones por retrasos en la devolución.
 
-**>- Reporte de disponibilidad:**
+**- Reporte de disponibilidad:**
 
   >- Indicar si un libro está prestado o disponible.
 
