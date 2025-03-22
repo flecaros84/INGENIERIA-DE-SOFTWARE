@@ -14,7 +14,7 @@
 
 **o   Requisitos del Cliente:**
 
-  - Gestión de Usuarios, Gestión de Libros, Préstamo y Devolución, Catálogo en Línea, Reportes y Estadísticas.
+  - Gestión de Usuarios, Gestión de Libros, Préstamo y Devolución, Catálogo en Línea, Reportes y Estadísticas.
 
 Vienen más adelante.
 
