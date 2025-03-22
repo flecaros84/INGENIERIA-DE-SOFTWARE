@@ -4,7 +4,7 @@
 
 **Inicio (10 minutos)**
 
-**1. Presentación del Caso (5 minutos):**
+**###1. Presentación del Caso (5 minutos):**
 
 **o   Contexto del Caso:**
 
