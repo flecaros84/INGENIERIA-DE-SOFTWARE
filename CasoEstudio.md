@@ -6,22 +6,20 @@
 
 **1. Presentación del Caso (5 minutos):**
 
-**o Contexto del Caso:**
+**- Contexto del Caso:**
 
 - La biblioteca de una universidad necesita modernizar su sistema de gestión para mejorar la eficiencia y la satisfacción del usuario.
 - Problemas actuales: pérdida de libros, dificultades en la búsqueda de materiales, largas colas para préstamos y devoluciones.
 
-**o Requisitos del Cliente:**
+**- Requisitos del Cliente:**
   - Gestión de Usuarios, Gestión de Libros, Préstamo y Devolución, Catálogo en Línea, Reportes y Estadísticas.
 
-Vienen más adelante.
-
-**o Roles y Responsabilidades:**
+**- Roles y Responsabilidades:**
   - Gestor de Proyecto, Analista, Diseñador, Tester.
 
 **2. Asignación de Equipos y Roles (5 minutos):**
-o Formar equipos de 3-4 integrantes.
-o Asignar roles dentro de cada equipo.
+- Formar equipos de 3-4 integrantes.
+- Asignar roles dentro de cada equipo.
 
   > - Gestor de Proyecto: Fabián Lecaros
   > - Analista: Héctor Águila
@@ -33,8 +31,8 @@ o Asignar roles dentro de cada equipo.
 **Bloque 1: Fase de Requisitos (35 minutos)**
 
 **1. Recolección de Requisitos (20 minutos):**
-  o El analista se reúne con el cliente (instructor o estudiante en el rol de bibliotecario jefe) para obtener detalles adicionales y clarificar requisitos.
-  o Documentar los requisitos detallados.
+  - El analista se reúne con el cliente (instructor o estudiante en el rol de bibliotecario jefe) para obtener detalles adicionales y clarificar requisitos.
+  - Documentar los requisitos detallados.
 
 **Requisitos Adicionales**
 
@@ -62,7 +60,7 @@ o Asignar roles dentro de cada equipo.
   >- Seguimiento de acciones realizadas por los bibliotecarios y administradores.
 
 **2. Planificación (15 minutos):**
-o    El gestor de proyecto organiza una reunión inicial para discutir los objetivos y el alcance del proyecto.
+  - El gestor de proyecto organiza una reunión inicial para discutir los objetivos y el alcance del proyecto.
 
 **- Objetivos:**
   >-Construir un sistema para al gestión de la biblioteca del DUOC Puerto Montt.
@@ -78,7 +76,7 @@ o    El gestor de proyecto organiza una reunión inicial para discutir los ob
 >  - **Tiempo de Duración del proyecto:** 6 meses.
 >  - **Recursos:** Computadores, Servidor, Hosting.
 
-o    Utilizar Trello para planificar y asignar tareas basadas en los requisitos documentados.
+- Utilizar Trello para planificar y asignar tareas basadas en los requisitos documentados.
 
 **Bloque 2: Fase de Diseño (35 minutos)**
 
