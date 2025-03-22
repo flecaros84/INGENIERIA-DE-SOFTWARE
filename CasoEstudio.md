@@ -1,30 +1,28 @@
-Caso de Estudio: Desarrollo de un Sistema de Gestión para una Biblioteca Universitaria
+**Caso de Estudio: Desarrollo de un Sistema de Gestión para una Biblioteca Universitaria**
 
-1.    Instrucciones
+**1. Instrucciones**
 
-Inicio (10 minutos)
+**Inicio (10 minutos)**
 
-Presentación del Caso (5 minutos):
+**1. Presentación del Caso (5 minutos):**
 
-o   Contexto del Caso:
+**o   Contexto del Caso:**
 
-§  La biblioteca de una universidad necesita modernizar su sistema de gestión para mejorar la eficiencia y la satisfacción del usuario.
+  - La biblioteca de una universidad necesita modernizar su sistema de gestión para mejorar la eficiencia y la satisfacción del usuario.
 
-§  Problemas actuales: pérdida de libros, dificultades en la búsqueda de materiales, largas colas para préstamos y devoluciones.
+  - Problemas actuales: pérdida de libros, dificultades en la búsqueda de materiales, largas colas para préstamos y devoluciones.
 
-o   Requisitos del Cliente:
+**o   Requisitos del Cliente:**
 
-§  Gestión de Usuarios, Gestión de Libros, Préstamo y Devolución, Catálogo en Línea, Reportes y Estadísticas.
+  - Gestión de Usuarios, Gestión de Libros, Préstamo y Devolución, Catálogo en Línea, Reportes y Estadísticas.
 
 Vienen más adelante.
 
-o   Roles y Responsabilidades:
+**o   Roles y Responsabilidades:**
 
-§  Gestor de Proyecto, Analista, Diseñador, Tester.
+  - Gestor de Proyecto, Analista, Diseñador, Tester.
 
-Bloque 1: Fase de Requisitos (35 minutos)
-
-2.    Asignación de Equipos y Roles (5 minutos):
+**2.    Asignación de Equipos y Roles (5 minutos):**
 
 o   Formar equipos de 3-4 integrantes.
 
@@ -38,11 +36,11 @@ Diseñador: Franco Ruz
 
 Tester: Vicente Barrera
 
-Desarrollo (105 minutos)
+**Desarrollo (105 minutos)**
 
-Bloque 1: Fase de Requisitos (35 minutos)
+**Bloque 1: Fase de Requisitos (35 minutos)**
 
-Recolección de Requisitos (20 minutos):
+**1. Recolección de Requisitos (20 minutos):**
 
 o    El analista se reúne con el cliente (instructor o estudiante en el rol de bibliotecario jefe) para obtener detalles adicionales y clarificar requisitos.
 
@@ -50,47 +48,45 @@ o    Documentar los requisitos detallados.
 
 Requisitos Adicionales
 
-Seguridad y autenticación:
+- Seguridad y autenticación:
 
-Ingreso con correo y contraseña.
+  - Ingreso con correo y contraseña.
 
-Encriptación de datos sensibles.
+  - Encriptación de datos sensibles.
 
-Historial de préstamos:
+- Historial de préstamos:
 
-Registro de libros solicitados y devueltos por cada usuario.
+  - Registro de libros solicitados y devueltos por cada usuario.
 
-Gestión de multas:
+- Gestión de multas:
 
-Posibilidad de registrar sanciones por retrasos en la devolución.
+  - Posibilidad de registrar sanciones por retrasos en la devolución.
 
-Reporte de disponibilidad:
+- Reporte de disponibilidad:
 
-Indicar si un libro está prestado o disponible.
+  - Indicar si un libro está prestado o disponible.
 
-Exportación de informes:
+- Exportación de informes:
 
-Generación de reportes en PDF o Excel para control de inventario.
+  - Generación de reportes en PDF o Excel para control de inventario.
 
-Búsqueda avanzada en el catálogo:
+- Búsqueda avanzada en el catálogo:
 
-Filtros por título, autor, categoría y disponibilidad.
+  - Filtros por título, autor, categoría y disponibilidad.
 
-Registro de actividad del sistema:
+- Registro de actividad del sistema:
 
-Seguimiento de acciones realizadas por los bibliotecarios y administradores.
+  - Seguimiento de acciones realizadas por los bibliotecarios y administradores.
 
-Si necesitas más detalles o quieres que refine algunos puntos, dime y lo ajustamos.
-
-2.      Planificación (15 minutos):
+**2. Planificación (15 minutos):**
 
 o    El gestor de proyecto organiza una reunión inicial para discutir los objetivos y el alcance del proyecto.
 
-Objetivos:
+- Objetivos:
 
 Construir un sistema para al gestión de la biblioteca del DUOC Puerto Montt.
 
-Ambito:
+- Ambito:
 
 El sistema va a permitir registrar la pérdida de libros.
 
@@ -108,35 +104,35 @@ Recursos: Computadores, Servidor, Hosting.
 
 o    Utilizar Trello para planificar y asignar tareas basadas en los requisitos documentados.
 
-Bloque 2: Fase de Diseño (35 minutos)
+**Bloque 2: Fase de Diseño (35 minutos)**
 
-Diseño Preliminar (20 minutos):
+**1. Diseño Preliminar (20 minutos):**
 
 o    El diseñador elabora el diseño preliminar del sistema, incluyendo la arquitectura, el modelo de datos, y los mockups de la interfaz de usuario (UI/UX).
 
 o    Preparar diagramas UML necesarios (diagramas de casos de uso).
 
-2.      Revisión y Ajustes (15 minutos):
+**2. Revisión y Ajustes (15 minutos):**
 
 o    El gestor de proyecto coordina una revisión del diseño preliminar con el cliente para obtener feedback.
 
 o    El diseñador ajusta el diseño según el feedback recibido.
 
-Bloque 3: Fase de Validación y Discusión en Plenario (35 minutos)
+**Bloque 3: Fase de Validación y Discusión en Plenario (35 minutos)**
 
-Validación del Diseño y Especificaciones (20 minutos):
+**1. Validación del Diseño y Especificaciones (20 minutos):**
 
 o    El tester desarrolla un plan de pruebas y casos de prueba basados en los requisitos documentados (sin ejecución real de pruebas).
 
 o    Asegurar que todas las especificaciones cumplen con los requisitos del cliente.
 
-2.      Preparación de la Entrega (5 minutos):
+**2. Preparación de la Entrega (5 minutos):**
 
 o    El equipo prepara la presentación final del sistema al cliente.
 
 o    Documentar las lecciones aprendidas y preparar el informe de cierre del proyecto.
 
-3.      Presentación y Discusión en Plenario (10 minutos):
+**3. Presentación y Discusión en Plenario (10 minutos):**
 
 o    Cada equipo presenta su solución al plenario.
 
@@ -146,7 +142,7 @@ o    Se realiza una sesión de retroalimentación de pares, intercambiando op
 
 Cierre (10 minutos)
 
-Retroalimentación del Instructor (10 minutos):
+**Retroalimentación del Instructor (10 minutos):**
 
 o    El docente proporciona feedback final, destacando los puntos fuertes y las áreas de mejora.
 
@@ -154,7 +150,7 @@ o    Cierre de la actividad y reflexión sobre las lecciones aprendidas.
 
 
 
-Entregables:
+**Entregables:**
 
 ·        Documento de especificaciones de requisitos.
 
@@ -168,21 +164,21 @@ Entregables:
 
 
 
-Herramientas Sugeridas:
+**Herramientas Sugeridas:**
 
-·        Trello: Para la gestión de tareas y planificación.
+·        **Trello:** Para la gestión de tareas y planificación.
 
 
 
-1.    Contexto del Caso
+**2.    Contexto del Caso**
 
 La biblioteca de una universidad ha decidido modernizar su sistema de gestión para mejorar la eficiencia y la satisfacción del usuario. Actualmente, el sistema es manual y presenta diversos problemas, como la pérdida de libros, dificultades en la búsqueda de materiales y largas colas para préstamos y devoluciones.
 
-Requisitos del Cliente:
+**Requisitos del Cliente:**
 
 El cliente (representado por un instructor o un estudiante en el rol de bibliotecario jefe) ha proporcionado los siguientes requisitos iniciales:
 
-1.      Gestión de Usuarios:
+**1.      Gestión de Usuarios:**
 
 ·        Registro de nuevos usuarios (estudiantes, profesores, personal).
 
@@ -190,7 +186,7 @@ El cliente (representado por un instructor o un estudiante en el rol de bibliote
 
 ·        Gestión de permisos y roles de usuarios.
 
-2.      Gestión de Libros:
+**2.      Gestión de Libros:**
 
 ·        Registro de nuevos libros.
 
@@ -198,7 +194,7 @@ El cliente (representado por un instructor o un estudiante en el rol de bibliote
 
 ·        Búsqueda de libros por título, autor, ISBN, y categoría.
 
-3.      Préstamo y Devolución:
+**3.      Préstamo y Devolución:**
 
 ·        Registro de préstamos de libros.
 
@@ -206,13 +202,13 @@ El cliente (representado por un instructor o un estudiante en el rol de bibliote
 
 ·        Notificaciones automáticas de vencimiento de préstamo.
 
-4.      Catálogo en Línea:
+**4.      Catálogo en Línea:**
 
 ·        Consulta en línea del catálogo de libros disponibles.
 
 ·        Reserva en línea de libros.
 
-5.      Reportes y Estadísticas:
+**5.      Reportes y Estadísticas:**
 
 ·        Generación de reportes de libros más prestados.
 
@@ -222,9 +218,9 @@ El cliente (representado por un instructor o un estudiante en el rol de bibliote
 
 
 
-Roles y Responsabilidades:
+**Roles y Responsabilidades:**
 
-1.  Gestor de Proyecto:
+**1.  Gestor de Proyecto:**
 
 ·        Coordinar el equipo de desarrollo.
 
@@ -234,7 +230,7 @@ Roles y Responsabilidades:
 
 ·        Asegurar que el proyecto se mantenga dentro del presupuesto y plazo acordado.
 
-2.  Analista:
+**2.  Analista:**
 
 ·        Recolectar y documentar requisitos detallados del cliente.
 
@@ -242,7 +238,7 @@ Roles y Responsabilidades:
 
 ·        Identificar y resolver ambigüedades en los requisitos.
 
-3.  Diseñador:
+**3.  Diseñador:**
 
 ·        Crear el diseño del sistema, incluyendo la arquitectura y el modelo de datos.
 
@@ -250,7 +246,7 @@ Roles y Responsabilidades:
 
 ·        Preparar diagramas UML (casos de uso, clases, secuencia).
 
-4.  Tester:
+**4.  Tester:**
 
 ·        Desarrollar y ejecutar casos de prueba.
 
@@ -258,9 +254,9 @@ Roles y Responsabilidades:
 
 ·        Asegurar la calidad del software mediante pruebas funcionales y no funcionales.
 
-Dinámica del Juego de Roles:
+**Dinámica del Juego de Roles:**
 
-1. Fase de Requisitos:
+**1. Fase de Requisitos:**
 
 ·        El analista se reúne con el cliente para obtener detalles adicionales y clarificar requisitos.
 
@@ -270,7 +266,7 @@ Dinámica del Juego de Roles:
 
 
 
-2.      Fase de Diseño:
+**2.      Fase de Diseño:**
 
 ·        El diseñador elabora el diseño preliminar del sistema y lo presenta al equipo.
 
@@ -278,13 +274,13 @@ Dinámica del Juego de Roles:
 
 ·        El diseñador ajusta el diseño según el feedback recibido.
 
-3.      Fase de Implementación:
+**3.      Fase de Implementación:**
 
 ·        Los desarrolladores (pueden ser otros estudiantes no mencionados específicamente en los roles) empiezan a construir el sistema basado en el diseño aprobado.
 
 ·        El gestor de proyecto monitorea el progreso y asegura la alineación con el plan de trabajo.
 
-4.      Fase de Pruebas:
+**4.      Fase de Pruebas:**
 
 ·        El tester desarrolla un plan de pruebas y casos de prueba basados en los requisitos.
 
@@ -292,7 +288,7 @@ Dinámica del Juego de Roles:
 
 ·        El gestor de proyecto asegura que todos los requisitos han sido probados y validados.
 
-5.      Fase de Entrega:
+**5.      Fase de Entrega:**
 
 ·        El gestor de proyecto organiza una reunión de revisión final con el cliente.
 
