@@ -18,13 +18,13 @@
   - Gestor de Proyecto, Analista, Diseñador, Tester.
 
 **2. Asignación de Equipos y Roles (5 minutos):**
-- Formar equipos de 3-4 integrantes.
-- Asignar roles dentro de cada equipo.
+  - Formar equipos de 3-4 integrantes.
+  - Asignar roles dentro de cada equipo.
 
-  > - Gestor de Proyecto: Fabián Lecaros
-  > - Analista: Héctor Águila
-  > - Diseñador: Franco Ruz
-  > - Tester: Vicente Barrera
+    > - Gestor de Proyecto: Fabián Lecaros
+    > - Analista: Héctor Águila
+    > - Diseñador: Franco Ruz
+    > - Tester: Vicente Barrera
 
 **Desarrollo (105 minutos)**
 
