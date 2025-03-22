@@ -2,15 +2,15 @@
 
 **1. Instrucciones**
 
-**Inicio (10 minutos)**
+  **Inicio (10 minutos)**
 
 **1. Presentación del Caso (5 minutos):**
 
-**o   Contexto del Caso:**
+  **o   Contexto del Caso:**
 
-  - La biblioteca de una universidad necesita modernizar su sistema de gestión para mejorar la eficiencia y la satisfacción del usuario.
+    - La biblioteca de una universidad necesita modernizar su sistema de gestión para mejorar la eficiencia y la satisfacción del usuario.
 
-  - Problemas actuales: pérdida de libros, dificultades en la búsqueda de materiales, largas colas para préstamos y devoluciones.
+    - Problemas actuales: pérdida de libros, dificultades en la búsqueda de materiales, largas colas para préstamos y devoluciones.
 
 **o   Requisitos del Cliente:**
 
