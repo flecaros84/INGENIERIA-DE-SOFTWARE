@@ -35,7 +35,7 @@
 **Requisitos Adicionales**
 
 - **Seguridad y autenticación:**
-  >- Ingreso con correo y contraseña.
+  >- Autenticación de usuarios con credenciales institucionales: El sistema permitirá el acceso utilizando el correo electrónico y contraseña que los usuarios (estudiantes, profesores, personal) ya tienen registrados en el sistema central de Duoc.
   >- Encriptación de datos sensibles.
 
 - **Historial de préstamos:**
@@ -54,7 +54,6 @@
   >- Filtros por título, autor, categoría y disponibilidad.
 
 - **Registro de actividad del sistema:**
-
   >- Seguimiento de acciones realizadas por los bibliotecarios y administradores.
 
 **2. Planificación (15 minutos):**
@@ -109,6 +108,7 @@ Cierre (10 minutos)
 **Entregables:**
   - Documento de especificaciones de requisitos.
   - Diseño del sistema (diagramas UML, mockups de UI/UX).
+         Diagrama de Caso de Uso:   https://lucid.app/lucidchart/1acf4bdd-34f7-4147-a53a-d6af96b6111e/edit?viewport_loc=-267%2C-270%2C1959%2C2316%2C.Q4MUjXso07N&invitationId=inv_c4c4d894-6b93-4ade-8173-d4b4bcbc5532
   - Plan de proyecto y cronograma.
   - Casos de prueba y reporte de pruebas.
   - Informe final del proyecto.
