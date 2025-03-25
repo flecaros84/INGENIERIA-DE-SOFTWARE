@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Libros - Biblioteca Duoc UC</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        body {
+            background-color: #f1f7fc;
+            color: #333;
+        }
+        .navbar, .footer {
+            background-color: #5bc0de;
+        }
+        .list-group-item {
+            border-radius: 10px;
+            background-color: #ffffff;
+            margin-bottom: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .list-group-item:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .footer {
+            padding: 10px 0;
+            text-align: center;
+            color: #ffffff;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">Biblioteca Duoc UC</a>
+        </div>
+    </nav>
+
+    <!-- Catálogo de Libros (Lista) -->
+    <div class="container py-5">
+        <h2 class="text-center mb-4">Catálogo de Libros</h2>
+        
+        <ul class="list-group">
+            <!-- Libro 1 -->
+            <li class="list-group-item">
+                <h5 class="mb-1">Introducción a la Programación</h5>
+                <p class="mb-1"><strong>Autor:</strong> Juan Pérez</p>
+                <p class="mb-1"><strong>Categoría:</strong> Programación</p>
+                <p>Este libro es una introducción a los conceptos fundamentales de la programación en diversos lenguajes.</p>
+                <a href="#" class="btn btn-info btn-sm">Ver detalles</a>
+            </li>
+
+            <!-- Libro 2 -->
+            <li class="list-group-item">
+                <h5 class="mb-1">Historia del Arte</h5>
+                <p class="mb-1"><strong>Autor:</strong> María García</p>
+                <p class="mb-1"><strong>Categoría:</strong> Arte</p>
+                <p>Explora la evolución del arte desde la prehistoria hasta la actualidad, con énfasis en las obras maestras.</p>
+                <a href="#" class="btn btn-info btn-sm">Ver detalles</a>
+            </li>
+
+            <!-- Libro 3 -->
+            <li class="list-group-item">
+                <h5 class="mb-1">Matemáticas Avanzadas</h5>
+                <p class="mb-1"><strong>Autor:</strong> Andrés López</p>
+                <p class="mb-1"><strong>Categoría:</strong> Matemáticas</p>
+                <p>Un libro que cubre temas avanzados en matemáticas como álgebra lineal, cálculo diferencial y teoría de números.</p>
+                <a href="#" class="btn btn-info btn-sm">Ver detalles</a>
+            </li>
+
+            <!-- Libro 4 -->
+            <li class="list-group-item">
+                <h5 class="mb-1">Química General</h5>
+                <p class="mb-1"><strong>Autor:</strong> Laura Fernández</p>
+                <p class="mb-1"><strong>Categoría:</strong> Química</p>
+                <p>Una introducción a los principios básicos de la química, ideal para estudiantes universitarios de ingeniería.</p>
+                <a href="#" class="btn btn-info btn-sm">Ver detalles</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 Biblioteca Duoc UC. Todos los derechos reservados.</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
