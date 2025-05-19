@@ -1,0 +1,28 @@
+@startuml RegistroPedidoDespacho
+title Diagrama de Actividad 02: Registro de Pedido y Despacho con Particiones
+
+start
+
+partition "Frontend (Cliente Web)" {
+  :Cliente autenticado;
+  :Selecciona productos;
+  :Envía solicitud de compra;
+}
+
+partition "Bicicletas-Service" {
+  :Verifica stock disponible;
+}
+
+partition "Pedidos-Service" {
+  if (Stock disponible?) then (sí)
+    :Registra pedido;
+    :Actualiza estado a 'Pendiente';
+    :Programa despacho;
+    :Envía confirmación al cliente;
+  else (no)
+    :Informa stock insuficiente;
+  endif
+}
+
+stop
+@enduml

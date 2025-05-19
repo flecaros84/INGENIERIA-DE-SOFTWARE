@@ -1,0 +1,32 @@
+@startuml SolicitudReparacion
+title Diagrama de Actividad 01: Solicitud de Reparación
+
+start
+
+partition "Frontend (Cliente Web)" {
+  :Cliente inicia sesión;
+  :Accede a Reparaciones;
+  :Completa formulario;
+}
+
+partition "Bicicletas-Service" {
+  if (Bicicleta registrada?) then (sí)
+    :Selecciona bicicleta;
+  else (no)
+    :Registra nueva bicicleta;
+  endif
+
+  :Envía solicitud;
+  :Registra orden de reparación;
+}
+
+partition "Pedidos-Service" {
+  :Crea seguimiento de orden;
+}
+
+partition "Notificación (Opcional)" {
+  :Notifica al técnico asignado;
+}
+
+stop
+@enduml

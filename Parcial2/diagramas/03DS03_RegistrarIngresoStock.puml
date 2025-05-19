@@ -1,0 +1,17 @@
+@startuml RegistrarIngresoStock
+title Diagrama de Secuencia 03: Registrar Ingreso de Stock
+
+actor Supervisor
+participant BicicletasService as "Bicicletas-Service"
+participant IntegracionProveedor as "Integración-Proveedor"
+participant ReportesService as "Reportes-Service"
+
+Supervisor -> BicicletasService : Inicia ingreso de stock
+BicicletasService -> IntegracionProveedor : Verifica insumos (REST)
+IntegracionProveedor --> BicicletasService : Stock confirmado
+
+BicicletasService -> ReportesService : Reporta ingreso de stock
+ReportesService --> BicicletasService : Confirmación
+
+BicicletasService --> Supervisor : Ingreso registrado correctamente
+@enduml

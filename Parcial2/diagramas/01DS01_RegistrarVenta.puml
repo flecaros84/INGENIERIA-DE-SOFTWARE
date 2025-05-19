@@ -1,0 +1,20 @@
+@startuml RegistrarVenta
+title Diagrama de Secuencia 01: Registrar una Venta
+
+actor Cliente
+participant AuthService as "Auth-Service"
+participant BicicletasService as "Bicicletas-Service"
+participant PedidosService as "Pedidos-Service"
+
+Cliente -> AuthService : Inicia sesión / autentica
+AuthService --> Cliente : Token JWT
+
+Cliente -> BicicletasService : Consulta stock bicicleta
+BicicletasService --> Cliente : Stock disponible
+
+Cliente -> PedidosService : Solicita creación de pedido
+PedidosService -> BicicletasService : Actualiza stock
+BicicletasService --> PedidosService : Confirmación
+
+PedidosService --> Cliente : Pedido registrado con éxito
+@enduml

@@ -1,0 +1,37 @@
+@startuml ArriendoBicicleta
+title Diagrama de Actividad 03: Solicitud de Arriendo de Bicicleta
+
+start
+
+partition "Frontend (Cliente Web)" {
+  :Cliente inicia sesión;
+  :Selecciona opción 'Arriendo';
+  :Busca bicicleta por tipo o disponibilidad;
+  :Elige bicicleta y fechas;
+  :Envía solicitud de arriendo;
+}
+
+partition "Auth-Service" {
+  :Valida token JWT;
+}
+
+partition "Bicicletas-Service" {
+  :Verifica disponibilidad;
+  if (Disponible?) then (sí)
+    :Registra solicitud de arriendo;
+    :Reserva bicicleta;
+  else (no)
+    :Informa no disponibilidad;
+  endif
+}
+
+partition "Pedidos-Service" {
+  :Crea orden de arriendo con estado 'Pendiente';
+}
+
+partition "Frontend (Cliente Web)" {
+  :Recibe confirmación de reserva;
+}
+
+stop
+@enduml

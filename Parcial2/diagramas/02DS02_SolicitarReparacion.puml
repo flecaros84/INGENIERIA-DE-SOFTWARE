@@ -1,0 +1,17 @@
+@startuml SolicitarReparacion
+title Diagrama de Secuencia 02: Solicitar una Reparación
+
+actor Cliente
+participant AuthService as "Auth-Service"
+participant BicicletasService as "Bicicletas-Service"
+participant PedidosService as "Pedidos-Service"
+
+Cliente -> AuthService : Autenticarse con credenciales
+AuthService --> Cliente : Token JWT
+
+Cliente -> BicicletasService : Solicita reparación de bicicleta
+BicicletasService -> PedidosService : Registra orden de servicio
+PedidosService --> BicicletasService : Confirmación
+
+BicicletasService --> Cliente : Reparación registrada
+@enduml

@@ -1,0 +1,51 @@
+@startuml DiagramaComponentes
+title Diagrama de Componentes - Sistema MasterBikes
+
+' Cliente
+[Frontend\n(HTML/CSS/JS/React)] as Frontend
+
+' API Gateway
+component "API Gateway\n(Spring Cloud Gateway)" as Gateway
+
+' Paquete de microservicios
+package "Microservicios\n(Spring Boot en AWS EC2)" {
+    component "Auth-Service\n(Seguridad + JWT)" as Auth
+    component "Bicicletas-Service\n(Arriendos y Stock)" as Bicicletas
+    component "Pedidos-Service\n(Pedidos y Despachos)" as Pedidos
+    component "Reportes-Service\n(Estadísticas)" as Reportes
+    component "Integración-Proveedor\n(Client REST)" as Proveedor
+}
+
+' Paquete de bases de datos (declarado después para forzar posición inferior)
+package "Bases de Datos\n(Oracle - AWS RDS)" {
+    database "DB_Usuarios" as DB_Usuarios
+    database "DB_Productos" as DB_Productos
+    database "DB_Pedidos" as DB_Pedidos
+    database "DB_Reportes" as DB_Reportes
+}
+
+' Proveedor externo (queda a la derecha naturalmente)
+component "SHIMANO API\n(REST)" as Shimano
+
+' Conexiones
+Frontend --> Gateway : HTTP
+Gateway --> Auth
+Gateway --> Bicicletas
+Gateway --> Pedidos
+Gateway --> Reportes
+
+Auth -down-> DB_Usuarios
+Bicicletas -down-> DB_Productos
+Pedidos -down-> DB_Pedidos
+Reportes -down-> DB_Reportes
+
+Bicicletas --> Proveedor : Consulta insumos
+Proveedor --> Shimano : REST API
+
+@enduml
+
+
+
+
+
+

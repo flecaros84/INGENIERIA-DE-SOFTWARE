@@ -1,0 +1,50 @@
+@startuml CasosUso
+title Diagrama de Casos de Uso - Sistema MasterBikes (Distribución de actores)
+
+left to right direction
+
+actor Cliente
+actor Vendedor
+
+rectangle "Sistema MasterBikes" {
+
+  usecase "Registrarse / Iniciar sesión" as UC1
+
+  usecase "Solicitar arriendo de bicicleta" as UC2
+  usecase "Solicitar servicio de reparación" as UC3
+  usecase "Consultar estado de pedido" as UC4
+
+  usecase "Registrar venta" as UC5
+  usecase "Registrar ingreso de bicicletas" as UC6
+
+  usecase "Visualizar órdenes asignadas" as UC7
+  usecase "Actualizar estado de reparación" as UC8
+
+  usecase "Generar reporte de ventas" as UC9
+  usecase "Generar reporte de servicios" as UC10
+  usecase "Gestionar stock con proveedor" as UC11
+}
+
+actor Técnico
+actor Supervisor
+
+' Conexiones
+Cliente --> UC1
+Cliente --> UC2
+Cliente --> UC3
+Cliente --> UC4
+
+Vendedor --> UC1
+Vendedor --> UC5
+Vendedor --> UC6
+
+Técnico --> UC1
+Técnico --> UC7
+Técnico --> UC8
+
+Supervisor --> UC1
+Supervisor --> UC9
+Supervisor --> UC10
+Supervisor --> UC11
+
+@enduml

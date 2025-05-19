@@ -1,0 +1,53 @@
+@startuml Diagrama
+title Diagrama de Despliegue - Sistema MasterBikes
+
+' Nodo de cliente
+node "Cliente\n(Navegador Web)" {
+  artifact "Frontend Web\n(HTML/JS/React o Vue)"
+}
+
+' Nodo de infraestructura EC2
+node "Servidor EC2\n(AWS - Java Spring Boot)" {
+  
+  node "API Gateway\n(Spring Cloud Gateway)" {
+    component "gateway.jar"
+  }
+
+  node "Microservicios (Spring Boot)" {
+    component "auth-service.jar"
+    component "bicicletas-service.jar"
+    component "pedidos-service.jar"
+    component "reportes-service.jar"
+    component "integracion-proveedor.jar"
+  }
+}
+
+' Nodo RDS
+database "Oracle RDS\n(Base de Datos en AWS)" {
+  [Usuarios DB]
+  [Productos DB]
+  [Pedidos DB]
+  [Reportes DB]
+}
+
+' Nodo proveedor externo
+node "Proveedor externo (SHIMANO)" {
+  [SHIMANO REST API]
+}
+
+' Conexiones
+"Frontend Web\n(HTML/JS/React o Vue)" --> "gateway.jar" : HTTPS
+"gateway.jar" --> "auth-service.jar"
+"gateway.jar" --> "bicicletas-service.jar"
+"gateway.jar" --> "pedidos-service.jar"
+"gateway.jar" --> "reportes-service.jar"
+
+"bicicletas-service.jar" --> "integracion-proveedor.jar" : REST Client
+"integracion-proveedor.jar" --> [SHIMANO REST API]
+
+"auth-service.jar" --> [Usuarios DB]
+"bicicletas-service.jar" --> [Productos DB]
+"pedidos-service.jar" --> [Pedidos DB]
+"reportes-service.jar" --> [Reportes DB]
+
+@enduml
