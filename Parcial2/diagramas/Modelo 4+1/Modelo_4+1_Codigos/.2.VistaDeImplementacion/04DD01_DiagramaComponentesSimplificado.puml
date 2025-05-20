@@ -1,0 +1,158 @@
+@startuml Componentes_MasterBikes
+title Diagrama de Componentes: Sistema MasterBikes (Simplificado)
+
+' === NUEVA PALETA MATERIAL DESIGN MEJORADA (Sintaxis Corregida) ===
+skinparam backgroundColor #ECEFF1
+' Fondo general
+skinparam defaultTextAlignment center
+skinparam Linetype ortho
+
+'/ === Colores Base === /
+skinparam ArrowColor #1E88E5
+' Flechas
+
+skinparam note {
+  BackgroundColor #FFF9C4
+  BorderColor #FBC02D
+  FontColor #37474F
+}
+' Notas
+
+'/ === Actores y Boundaries === /
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #546E7A
+  FontColor #263238
+}
+' Actores
+
+skinparam boundary {
+  BackgroundColor #E0F2F1
+  BorderColor #00796B
+  FontColor #004D40
+}
+' FrontendWebApp (UI)
+
+'/ === Componentes y Participantes (Estilos Específicos) === /
+skinparam component<<Gateway>> {
+  BackgroundColor #E1F5FE
+  BorderColor #0277BD
+  FontColor #01579B
+}
+' API Gateway
+
+skinparam component<<Microservice>> {
+  BackgroundColor #E8EAF6
+  BorderColor #303F9F
+  FontColor #1A237E
+}
+' Base para Microservicios
+
+skinparam component<<AuthService>> {
+  BackgroundColor #E3F2FD
+  BorderColor #1565C0
+  FontColor #0D47A1
+}
+' Auth-Service
+
+skinparam component<<BicicletasService>> {
+  BackgroundColor #E8F5E9
+  BorderColor #2E7D32
+  FontColor #1B5E20
+}
+' Bicicletas-Service
+
+skinparam component<<PedidosService>> {
+  BackgroundColor #FFF3E0
+  BorderColor #EF6C00
+  FontColor #E65100
+}
+' Pedidos-Service
+
+skinparam component<<NotificacionesService>> {
+  BackgroundColor #FFFDE7
+  BorderColor #F9A825
+  FontColor #F57F17
+}
+' Notificaciones-Service
+
+skinparam component<<IntegracionProveedorService>> {
+  BackgroundColor #ECEFF1
+  BorderColor #455A64
+  FontColor #263238
+}
+' Integracion-Proveedor-Service
+
+skinparam component<<ReportesService>> {
+  BackgroundColor #F3E5F5
+  BorderColor #6A1B9A
+  FontColor #4A148C
+}
+' Reportes-Service
+
+skinparam database {
+  BackgroundColor #CFD8DC
+  BorderColor #455A64
+  FontColor #263238
+}
+' Bases de Datos (genérico)
+
+skinparam component<<ExternalSystem>> {
+    BackgroundColor #B0BEC5
+    BorderColor #455A64
+    FontColor #263238
+}
+' Sistemas Externos
+' === FIN DE PALETA ===
+
+' === Declaración de Componentes Principales ===
+boundary "FrontendWebApp" as Frontend <<UI>>
+component "API Gateway" as Gateway <<Gateway>>
+database "Persistencia MasterBikes" as DBPersistence <<Database_Server>>
+' La capa de persistencia como un bloque más grande
+component "SHIMANO API" as ShimanoAPI <<ExternalSystem>>
+
+' === Paquete de Microservicios ===
+package "Plataforma Microservicios MasterBikes" as AppPlatform <<Node>> {
+  component "Auth-Service" as AuthService <<AuthService>> <<Microservice>>
+  component "Bicicletas-Service" as BicicletasService <<BicicletasService>> <<Microservice>>
+  component "Pedidos-Service" as PedidosService <<PedidosService>> <<Microservice>>
+  component "Notificaciones-Service" as NotificacionesService <<NotificacionesService>> <<Microservice>>
+  component "Reportes-Service" as ReportesService <<ReportesService>> <<Microservice>>
+  component "Integracion-Proveedor" as IntegracionProveedorService <<IntegracionProveedorService>> <<Microservice>>
+}
+
+' === Interfaces y Dependencias ===
+
+Frontend -down-> Gateway : Consume API Unificada
+
+' Gateway depende de Auth-Service para validación de tokens
+Gateway ..> AuthService : Valida Tokens / Autentica
+' El resto de las solicitudes son enrutadas a los servicios correspondientes dentro de AppPlatform
+Gateway ..> AppPlatform : Enruta Solicitudes Protegidas
+note right of Gateway
+  El Gateway valida tokens (usando Auth-Service)
+  y luego dirige las solicitudes al microservicio
+  apropiado dentro de la plataforma.
+end note
+
+
+' Dependencias entre Microservicios (ejemplos clave)
+PedidosService ..> BicicletasService : API Stock
+BicicletasService ..> IntegracionProveedorService : API Proveedor
+IntegracionProveedorService ..> ShimanoAPI : API Externa
+
+' Acceso general a la persistencia desde la plataforma de microservicios
+AppPlatform -down-> DBPersistence : Acceso a Datos
+note right of DBPersistence
+  Los microservicios dentro de AppPlatform
+  acceden a la capa de persistencia.
+  Lógicamente, cada servicio gestiona
+  su propio esquema/tablas.
+end note
+
+' Uso de Notificaciones
+PedidosService ..> NotificacionesService : Notificar Evento Pedido
+BicicletasService ..> NotificacionesService : Notificar Evento Bicicleta
+
+@enduml

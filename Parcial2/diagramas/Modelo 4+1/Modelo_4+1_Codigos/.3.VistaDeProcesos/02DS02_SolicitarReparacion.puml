@@ -1,0 +1,169 @@
+@startuml SolicitarReparacion_MasterBikes
+title Diagrama de Secuencia: Cliente Solicita Reparación de Bicicleta
+
+' === NUEVA PALETA MATERIAL DESIGN MEJORADA ===
+skinparam backgroundColor #ECEFF1
+' Material Blue Grey 50 (fondo muy suave)
+skinparam sequenceMessageAlign center
+skinparam defaultTextAlignment center
+
+skinparam ArrowColor #1E88E5
+' Material Blue 600 (azul principal para flechas)
+skinparam note {
+  BackgroundColor #FFF9C4
+  ' Material Yellow 100 (amarillo pastel para notas)
+  BorderColor #FBC02D
+  ' Material Yellow 700
+  FontColor #37474F
+  ' Gris oscuro azulado para texto de nota
+}
+
+skinparam actor {
+  BackgroundColor #FFFFFF
+  ' Fondo blanco
+  BorderColor #546E7A
+  ' Material Blue Grey 600
+  FontColor #263238
+  ' Material Blue Grey 900 (texto oscuro)
+}
+skinparam boundary {
+' FrontendWebApp
+  BackgroundColor #E0F2F1
+  ' Material Teal 50 (verde azulado muy claro)
+  BorderColor #00796B
+  ' Material Teal 700
+  FontColor #004D40
+  ' Teal muy oscuro
+}
+skinparam participant<<Gateway>> {
+' APIGateway
+  BackgroundColor #E1F5FE
+  ' Material Light Blue 50
+  BorderColor #0277BD
+  ' Material Light Blue 800
+  FontColor #01579B
+  ' Light Blue muy oscuro
+}
+skinparam participant<<Microservice>> {
+' Base para Microservicios
+  BackgroundColor #E8EAF6
+  ' Material Indigo 50 (lila/índigo muy claro)
+  BorderColor #303F9F
+  ' Material Indigo 700
+  FontColor #1A237E
+  ' Indigo muy oscuro
+}
+skinparam participant<<AuthService>> {
+  BackgroundColor #E3F2FD
+  ' Material Blue 100 (azul claro)
+  BorderColor #1565C0
+  ' Material Blue 800
+  FontColor #0D47A1
+  ' Azul muy oscuro
+}
+skinparam participant<<BicicletasService>> {
+  BackgroundColor #E8F5E9
+  ' Material Green 50 (verde muy claro)
+  BorderColor #2E7D32
+  ' Material Green 800
+  FontColor #1B5E20
+  ' Verde muy oscuro
+}
+' PedidosService no se usa en este diagrama, pero se mantiene la definición por consistencia de paleta
+skinparam participant<<PedidosService>> {
+  BackgroundColor #FFF3E0
+  ' Material Orange 50 (naranja muy claro)
+  BorderColor #EF6C00
+  ' Material Orange 800
+  FontColor #E65100
+  ' Naranja muy oscuro
+}
+skinparam participant<<NotificacionesService>> {
+  BackgroundColor #FFFDE7
+  ' Material Yellow 50 (amarillo muy pálido)
+  BorderColor #F9A825
+  ' Material Yellow 800
+  FontColor #F57F17
+  ' Amarillo/ámbar oscuro
+}
+' === FIN DE PALETA ===
+
+' === Declaración de Participantes (Nombres del SRS MasterBikes) ===
+actor Cliente
+boundary FrontendWebApp as UI
+participant APIGateway <<Gateway>>
+participant "Auth-Service" as AuthService <<Microservice>>
+participant "Bicicletas-Service" as BicicletasService <<Microservice>>
+participant "Notificaciones-Service" as NotificacionesService <<Microservice>>
+
+' === Flujo del Diagrama ===
+
+== 1. Autenticación del Cliente (Si es necesaria) ==
+Cliente -> UI : Iniciar Sesión (usuario, clave)
+activate UI
+UI -> APIGateway : POST /auth/login (credenciales)
+activate APIGateway
+APIGateway -> AuthService : Validar Credenciales (credenciales)
+activate AuthService
+AuthService --> APIGateway #27AE60 : Autenticación Exitosa (tokenJWT)
+' Verde para éxito
+deactivate AuthService
+APIGateway --> UI #27AE60 : Sesión Iniciada (tokenJWT)
+deactivate APIGateway
+UI --> Cliente : Bienvenido
+deactivate UI
+
+== 2. Solicitud de Reparación ==
+Cliente -> UI : Nueva Solicitud Reparación (detallesBici, descProblema, tokenJWT)
+activate UI
+note left of Cliente
+  Cliente provee información
+  sobre su bicicleta y el problema.
+end note
+UI -> APIGateway : POST /reparaciones (solicitudReparacion, tokenJWT)
+activate APIGateway
+
+' APIGateway valida el token (implícito)
+
+APIGateway -> BicicletasService : Registrar Solicitud (datosCliente, solicitudReparacion)
+activate BicicletasService
+
+note right of BicicletasService
+  Bicicletas-Service recibe la solicitud,
+  la guarda internamente (ej. estado "Pendiente")
+  y prepara una confirmación.
+end note
+BicicletasService -> BicicletasService : GuardarSolicitudEnBD()
+' Mensaje reflexivo
+
+alt #F5F5F5 Solicitud Registrada Exitosamente
+' Fondo gris muy claro para 'alt'
+    BicicletasService --> APIGateway #27AE60 : Solicitud Creada (reparacionId)
+    ' Verde para éxito
+else #FFEBEE Error al Registrar Solicitud
+' Rojo pastel para fondo de error
+    BicicletasService --> APIGateway #E53935 : Error Interno al Registrar
+    ' Rojo Material para mensaje de error
+    deactivate BicicletasService
+    APIGateway --> UI #E53935 : Falla en Solicitud ("Error del sistema")
+    deactivate APIGateway
+    UI --> Cliente : Error: No se pudo procesar la solicitud.
+    deactivate UI
+    ' Fin del flujo en esta rama
+end
+deactivate BicicletasService
+
+' Notificación al Cliente (Asíncrona)
+APIGateway -> NotificacionesService : Notificar Solicitud Recibida (emailCliente, reparacionId)
+activate NotificacionesService
+NotificacionesService -> NotificacionesService : Preparar y Enviar EmailConfirmacion()
+' Acción interna
+deactivate NotificacionesService
+
+APIGateway --> UI #27AE60 : Confirmación Solicitud (reparacionId)
+' Verde para éxito
+deactivate APIGateway
+UI --> Cliente : Solicitud de Reparación #{reparacionId} recibida.
+deactivate UI
+
+@enduml

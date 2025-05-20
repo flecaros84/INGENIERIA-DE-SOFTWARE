@@ -1,0 +1,143 @@
+@startuml Actividad_SolicitudReparacion_MasterBikes
+title Diagrama de Actividad: Proceso de Solicitud de Reparación
+
+' === NUEVA PALETA MATERIAL DESIGN MEJORADA ===
+skinparam backgroundColor #ECEFF1
+' Material Blue Grey 50 (fondo muy suave)
+skinparam sequenceMessageAlign center
+' Mantenido por si acaso, aunque menos relevante aquí
+skinparam defaultTextAlignment center
+
+skinparam ArrowColor #1E88E5
+' Material Blue 600 (azul principal para flechas)
+skinparam note {
+  BackgroundColor #FFF9C4
+  ' Material Yellow 100 (amarillo pastel para notas)
+  BorderColor #FBC02D
+  ' Material Yellow 700
+  FontColor #37474F
+  ' Gris oscuro azulado para texto de nota
+}
+
+skinparam actor {
+  BackgroundColor #FFFFFF
+  ' Fondo blanco
+  BorderColor #546E7A
+  ' Material Blue Grey 600
+  FontColor #263238
+  ' Material Blue Grey 900 (texto oscuro)
+}
+skinparam partition {
+' Estilo para los carriles (swimlanes)
+  BackgroundColor #E0F2F1
+  ' Material Teal 50 (Color de UI/Boundary como base para carriles)
+  BorderColor #00796B
+  ' Material Teal 700
+  FontColor #004D40
+  ' Teal muy oscuro
+  ArrowColor #1E88E5
+  ' Para flechas dentro del carril si se anidan
+}
+skinparam activity {
+  BackgroundColor #FFFFFF
+  ' Fondo blanco para actividades
+  BorderColor #546E7A
+  ' Material Blue Grey 600
+  FontColor #263238
+  ' Material Blue Grey 900
+  DiamondBackgroundColor #E1F5FE
+  ' Material Light Blue 50 (Color para nodos de decisión - rombos)
+  DiamondBorderColor #0277BD
+  ' Material Light Blue 800
+}
+skinparam activityStart {
+  Color #27AE60
+  ' Verde para inicio
+}
+skinparam activityEnd {
+  Color #E53935
+  ' Rojo para fin
+}
+' === FIN DE PALETA ===
+
+' === Definición de Carriles (Swimlanes) ===
+|Cliente|
+start
+' El diagrama comienza aquí
+
+:Iniciar Sesión en el Portal;
+' Asumimos que el cliente ya está autenticado para este flujo específico.
+
+:Navegar a Sección "Solicitar Reparación";
+
+|FrontendWebApp (UI)|
+:Presentar Formulario de Solicitud de Reparación;
+note right
+  Formulario pide:
+  - Seleccionar bicicleta (si ya está registrada)
+  - O ingresar datos de nueva bicicleta
+  - Descripción del problema
+  - Preferencia de fecha/hora (opcional)
+end note
+
+|Cliente|
+:Completar y Enviar Formulario de Reparación;
+
+|FrontendWebApp (UI)|
+:Validar Datos del Formulario (Frontend);
+if (¿Errores de Formato en Formulario?) then (Sí)
+  :Mostrar Errores de Validación al Cliente;
+  --> Completar y Enviar Formulario de Reparación;
+  ' Bucle para corrección
+else (No, datos de formato OK)
+  :Enviar Datos de Solicitud al Backend;
+  ' Vía APIGateway (implícito en este diagrama para simplificar)
+
+  |Bicicletas-Service|
+  :Recibir Solicitud de Reparación;
+  :Validar Datos de Negocio;
+  ' Ej: ¿El cliente puede solicitar reparaciones? ¿La bicicleta es válida?
+  if (¿Bicicleta ya registrada por el cliente?) then (Sí)
+    :Asociar Solicitud a Bicicleta Existente;
+  else (No)
+    :Registrar Nueva Bicicleta para el Cliente (Opcional);
+    note right
+      Se crea un nuevo registro para la bicicleta
+      asociada al cliente si no existía.
+    end note
+    :Asociar Solicitud a Nueva Bicicleta;
+  endif
+
+  :Crear Registro de Solicitud de Reparación;
+  ' Se guarda en la BD de Bicicletas-Service
+  ' Estado inicial: "Pendiente de Evaluación" o "Recibida"
+  ' Se genera un ID de reparación.
+  :Asignar ID a la Solicitud;
+
+  |Notificaciones-Service|
+  :Preparar Email de Confirmación para Cliente;
+  :Enviar Email "Solicitud Recibida" al Cliente;
+  note left
+    Incluye ID de reparación
+    para seguimiento.
+  end note
+
+  |FrontendWebApp (UI)|
+  ' Volvemos al carril de la UI
+  :Recibir Confirmación del Backend;
+  :Mostrar Mensaje "Solicitud Enviada con Éxito" (ID: #{idReparacion});
+
+  |Cliente|
+  ' Volvemos al carril del Cliente
+  :Visualizar Confirmación en Pantalla;
+endif
+' Cierre del if (¿Errores de Formato en Formulario?)
+
+
+|Cliente|
+' Aseguramos que el flujo termine en el carril del cliente si no hubo bucle
+stop
+' Fin del flujo de *solicitud* inicial.
+' La evaluación y gestión por el técnico sería la continuación.
+
+@enduml

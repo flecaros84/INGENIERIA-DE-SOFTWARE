@@ -1,0 +1,86 @@
+@startuml Estado_Arriendo_MasterBikes
+title Diagrama de Estado: Ciclo de Vida de un Arriendo
+
+' === NUEVA PALETA MATERIAL DESIGN MEJORADA (Sintaxis Corregida) ===
+skinparam backgroundColor #ECEFF1
+' Material Blue Grey 50 (fondo muy suave)
+skinparam defaultTextAlignment center
+
+skinparam ArrowColor #1E88E5
+' Material Blue 600 (azul principal para flechas)
+skinparam note {
+  BackgroundColor #FFF9C4
+  ' Material Yellow 100 (amarillo pastel para notas)
+  BorderColor #FBC02D
+  ' Material Yellow 700
+  FontColor #37474F
+  ' Gris oscuro azulado para texto de nota
+}
+skinparam state {
+  BackgroundColor #CFD8DC
+  ' Material Blue Grey 100 para estados
+  BorderColor #546E7A
+  ' Material Blue Grey 600
+  FontColor #263238
+  ' Material Blue Grey 900
+  AttributeFontColor #37474F
+  ' Color para atributos/actividades dentro del estado
+}
+skinparam stateEnd {
+' Estilo para el estado final
+  BackgroundColor #FFCDD2
+  ' Rojo pastel
+  BorderColor #D32F2F
+}
+' === FIN DE PALETA ===
+
+[*] --> Solicitado
+' Estado inicial
+
+Solicitado : Cliente envía solicitud
+Solicitado --> PendienteDeConfirmacion : Solicitud Recibida / ValidarDatos()
+note on link
+  Sistema valida disponibilidad
+  y datos del cliente.
+end note
+
+PendienteDeConfirmacion --> Reservado : DisponibilidadOK / [RequierePagoPosterior] / ReservarBicicleta()
+PendienteDeConfirmacion --> PendienteDePago : DisponibilidadOK / [RequierePagoInmediato] / MostrarPasarelaPago()
+PendienteDeConfirmacion --> CanceladoPorSistema : NoDisponible O ErrorValidacion / NotificarCliente()
+
+PendienteDePago --> ConfirmadoPagado : PagoExitoso / ConfirmarReserva()
+PendienteDePago --> CanceladoPorSistema : PagoFallido O TimeoutPago / LiberarBicicleta()
+
+Reservado : Bicicleta reservada, esperando retiro/inicio.
+ConfirmadoPagado : Arriendo confirmado y pagado.
+
+Reservado --> Activo : ClienteRetiraBicicleta / FechaInicioLlega / IniciarArriendo()
+ConfirmadoPagado --> Activo : ClienteRetiraBicicleta / FechaInicioLlega / IniciarArriendo()
+
+Activo : Bicicleta en uso por el cliente.
+Activo : entry / IniciarContadorTiempoArriendo()
+Activo : exit / DetenerContadorTiempoArriendo()
+
+Activo --> DevueltoATiempo : ClienteDevuelveBicicleta / [DentroDelPlazo] / VerificarEstadoBicicleta()
+Activo --> DevueltoConRetraso : ClienteDevuelveBicicleta / [FueraDelPlazo] / CalcularMulta() & VerificarEstadoBicicleta()
+
+DevueltoATiempo --> Finalizado : EstadoBicicletaOK / CerrarArriendo()
+DevueltoATiempo --> EnRevisionPorDaños : EstadoBicicletaConDaños / RegistrarDaños()
+
+DevueltoConRetraso --> PendientePagoMulta : EstadoBicicletaOK / NotificarMulta()
+DevueltoConRetraso --> EnRevisionPorDañosYMulta : EstadoBicicletaConDaños / RegistrarDaños() & NotificarMulta()
+
+PendientePagoMulta --> Finalizado : PagoMultaExitoso / CerrarArriendo()
+EnRevisionPorDaños --> Finalizado : GestionDañosResuelta / [SinCostoAdicional] / CerrarArriendo()
+EnRevisionPorDaños --> PendientePagoDaños : GestionDañosResuelta / [ConCostoAdicional] / NotificarCostoDaños()
+EnRevisionPorDañosYMulta --> PendientePagoDañosYMulta : GestionDañosResuelta / [ConCostoAdicional] / NotificarCostoDañosYMulta()
+
+PendientePagoDaños --> Finalizado : PagoDañosExitoso / CerrarArriendo()
+PendientePagoDañosYMulta --> Finalizado : PagoTotalExitoso / CerrarArriendo()
+
+
+CanceladoPorSistema --> [*]
+Finalizado --> [*]
+' Estado final
+
+@enduml

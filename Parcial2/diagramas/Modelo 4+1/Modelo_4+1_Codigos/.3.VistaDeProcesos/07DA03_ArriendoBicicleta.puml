@@ -1,0 +1,144 @@
+@startuml Actividad_ArriendoBicicleta_MasterBikes
+title Diagrama de Actividad: Proceso de Solicitud de Arriendo de Bicicleta
+
+' === NUEVA PALETA MATERIAL DESIGN MEJORADA (Sintaxis Corregida) ===
+skinparam backgroundColor #ECEFF1
+skinparam sequenceMessageAlign center
+skinparam defaultTextAlignment center
+
+skinparam ArrowColor #1E88E5
+'azul principal para flechas
+skinparam note {
+  BackgroundColor #FFF9C4
+  'amarillo pastel para notas
+  BorderColor #FBC02D
+  FontColor #37474F
+  ' Gris oscuro azulado para texto de nota
+}
+
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #546E7A
+  FontColor #263238
+}
+skinparam partition {
+' Estilo para los carriles (swimlanes)
+  BackgroundColor #E0F2F1
+  'Color de UI como base para carriles
+  BorderColor #00796B
+  FontColor #004D40
+  ArrowColor #1E88E5
+  'Para flechas dentro del carril si se anidan
+}
+skinparam activity {
+  BackgroundColor #FFFFFF
+  ' Fondo blanco para actividades
+  BorderColor #546E7A
+  FontColor #263238
+  DiamondBackgroundColor #E1F5FE
+  'Color para nodos de decisión - rombos
+  DiamondBorderColor #0277BD
+}
+skinparam activityStart {
+  Color #27AE60
+  ' Verde para inicio
+}
+skinparam activityEnd {
+  Color #E53935
+  ' Rojo para fin
+}
+
+' Estilos específicos para participantes (microservicios)
+skinparam participant<<Gateway>> {
+    BackgroundColor #E1F5FE
+    BorderColor #0277BD
+    FontColor #01579B
+    }
+skinparam participant<<AuthService>> {
+    BackgroundColor #E3F2FD
+    BorderColor #1565C0
+    FontColor #0D47A1
+    }
+skinparam participant<<BicicletasService>> {
+    BackgroundColor #E8F5E9
+    BorderColor #2E7D32
+    FontColor #1B5E20
+    }
+skinparam participant<<NotificacionesService>> {
+    BackgroundColor #FFFDE7
+    BorderColor #F9A825
+    FontColor #F57F17
+    }
+' === FIN DE PALETA ===
+
+' === Definición de Carriles (Swimlanes) ===
+|Cliente|
+start
+:Iniciar Sesión (Si es necesario);
+' Asumimos autenticación previa
+:Acceder a Sección "Arriendo de Bicicletas";
+
+|FrontendWebApp (UI)|
+:Mostrar Catálogo de Bicicletas y Filtros;
+note right
+  Cliente puede buscar por tipo,
+  fecha, etc.
+end note
+
+|Cliente|
+:Buscar y Seleccionar Bicicleta;
+:Especificar Fechas de Arriendo;
+:Enviar Solicitud de Arriendo;
+
+|FrontendWebApp (UI)|
+:Validar Datos del Formulario (Frontend);
+if (¿Errores de Formato?) then (Sí)
+  :Mostrar Errores al Cliente;
+  --> Especificar Fechas de Arriendo;
+  ' Bucle para corrección
+else (No, formato OK)
+  :Enviar Solicitud al Backend (vía APIGateway);
+
+
+  |Bicicletas-Service|
+  ' Este servicio gestiona la disponibilidad y registro de arriendos
+  :Recibir Solicitud de Arriendo;
+  :Verificar Disponibilidad de Bicicleta\para Fechas Solicitadas;
+  ' Consulta su propia base de datos de inventario y reservas
+
+  if (¿Bicicleta Disponible?) then (Sí)
+    :Registrar Arriendo en el Sistema;
+    note right
+      Se crea un nuevo registro de arriendo.
+      Estado: "Reservado" o "Pendiente de Pago".
+      Se genera un ID de arriendo.
+    end note
+    :Reservar Bicicleta para el Cliente;
+    ' Actualiza la disponibilidad de la bicicleta para esas fechas
+    :Asignar ID al Arriendo;
+
+
+    |Notificaciones-Service|
+    :Preparar Email de Confirmación de Arriendo;
+    :Enviar Email "Arriendo Confirmado" al Cliente;
+    note left
+      Incluye ID de arriendo, fechas,
+      detalles de la bicicleta.
+    end note
+
+    |FrontendWebApp (UI)|
+    :Mostrar Mensaje "Arriendo Confirmado" (ID: #{idArriendo});
+
+  else (No, Bicicleta No Disponible)
+    |FrontendWebApp (UI)|
+    :Mostrar Mensaje "Bicicleta no disponible\npara esas fechas";
+  endif
+endif
+
+|Cliente|
+:Visualizar Confirmación/Error en UI;
+stop
+' Fin del flujo de solicitud y reserva inicial.
+' El retiro, uso y devolución serían otras actividades.
+
+@enduml

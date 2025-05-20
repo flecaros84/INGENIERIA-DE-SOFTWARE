@@ -1,0 +1,77 @@
+@startuml Estado_Reparacion_MasterBikes
+title Diagrama de Estado: Ciclo de Vida de una Reparación
+
+' === NUEVA PALETA MATERIAL DESIGN MEJORADA (Sintaxis Corregida) ===
+skinparam backgroundColor #ECEFF1
+' Material Blue Grey 50 (fondo muy suave)
+skinparam defaultTextAlignment center
+skinparam ArrowColor #1E88E5
+' Material Blue 600 (azul principal para flechas)
+skinparam note {
+  BackgroundColor #FFF9C4
+  ' Material Yellow 100 (amarillo pastel para notas)
+  BorderColor #FBC02D
+  ' Material Yellow 700
+  FontColor #37474F
+  ' Gris oscuro azulado para texto de nota
+}
+skinparam state {
+  BackgroundColor #CFD8DC
+  ' Material Blue Grey 100 para estados
+  BorderColor #546E7A
+  ' Material Blue Grey 600
+  FontColor #263238
+  ' Material Blue Grey 900
+  AttributeFontColor #37474F
+  ' Color para atributos/actividades dentro del estado
+}
+skinparam stateEnd {
+' Estilo para el estado final
+  BackgroundColor #FFCDD2
+  ' Rojo pastel
+  BorderColor #D32F2F
+}
+' === FIN DE PALETA ===
+
+[*] --> Solicitada
+
+Solicitada : Cliente envía solicitud de reparación.
+Solicitada --> PendienteDeEvaluacion : SolicitudRecibida / ValidarDatosCliente()
+note on link
+  Sistema valida datos básicos
+  y asigna a cola de técnicos.
+end note
+
+PendienteDeEvaluacion : Esperando asignación o revisión por técnico.
+PendienteDeEvaluacion --> EnEvaluacion : TecnicoRevisaSolicitud / IniciarDiagnostico()
+PendienteDeEvaluacion --> CanceladaPorCliente : ClienteCancelaSolicitud / NotificarCancelacion()
+
+EnEvaluacion : Técnico diagnosticando el problema.
+EnEvaluacion --> EsperandoRepuestos : DiagnosticoCompleto / [RequierePiezasNoDisponibles] / SolicitarPiezas() & NotificarCliente()
+EnEvaluacion --> PendienteDeAprobacionCliente : DiagnosticoCompleto / [RequiereAprobacionPresupuesto] / EnviarPresupuesto()
+EnEvaluacion --> EnReparacion : DiagnosticoCompleto / [PiezasDisponiblesYPresupuestoAceptadoSiAplica] / IniciarTrabajo()
+EnEvaluacion --> NoReparable : DiagnosticoCompleto / [DañoIrreparableOAltoCosto] / NotificarCliente()
+
+EsperandoRepuestos --> EnReparacion : PiezasRecibidas / ContinuarTrabajo()
+EsperandoRepuestos --> CanceladaPorDemora : TimeoutEsperaPiezas O ClienteCancela / NotificarCancelacion()
+
+PendienteDeAprobacionCliente --> EnReparacion : ClienteApruebaPresupuesto / IniciarTrabajo()
+PendienteDeAprobacionCliente --> CanceladaPorCliente : ClienteRechazaPresupuesto / NotificarRechazo()
+
+EnReparacion : Técnico trabajando en la bicicleta.
+EnReparacion --> ListaParaEntrega : TrabajoFinalizado / ControlCalidadOK() & NotificarCliente()
+EnReparacion --> EsperandoRepuestos : ProblemaAdicional / [RequiereMasPiezas] / SolicitarNuevasPiezas()
+
+ListaParaEntrega : Reparación completada, bicicleta lista para ser retirada.
+ListaParaEntrega --> Entregada : ClienteRetiraBicicleta / CerrarReparacion()
+ListaParaEntrega --> Abandonada : TimeoutRetiroCliente / ProcederSegunPoliticas()
+' Estado menos común
+
+CanceladaPorCliente --> [*]
+CanceladaPorDemora --> [*]
+NoReparable --> [*]
+' Podría ir a un estado "DevueltaSinReparar"
+Entregada --> [*]
+Abandonada --> [*]
+
+@enduml

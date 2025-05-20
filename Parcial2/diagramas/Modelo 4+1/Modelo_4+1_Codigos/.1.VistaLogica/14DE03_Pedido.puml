@@ -1,0 +1,76 @@
+@startuml Estado_PedidoVenta_MasterBikes
+title Diagrama de Estado: Ciclo de Vida de un Pedido de Venta
+
+' === NUEVA PALETA MATERIAL DESIGN MEJORADA (Sintaxis Corregida) ===
+skinparam backgroundColor #ECEFF1
+' Material Blue Grey 50 (fondo muy suave)
+skinparam defaultTextAlignment center
+skinparam ArrowColor #1E88E5
+' Material Blue 600 (azul principal para flechas)
+skinparam note {
+  BackgroundColor #FFF9C4
+  ' Material Yellow 100 (amarillo pastel para notas)
+  BorderColor #FBC02D
+  ' Material Yellow 700
+  FontColor #37474F
+  ' Gris oscuro azulado para texto de nota
+}
+skinparam state {
+  BackgroundColor #CFD8DC
+  ' Material Blue Grey 100 para estados
+  BorderColor #546E7A
+  ' Material Blue Grey 600
+  FontColor #263238
+  ' Material Blue Grey 900
+  AttributeFontColor #37474F
+  ' Color para atributos/actividades dentro del estado
+}
+skinparam stateEnd {
+' Estilo para el estado final
+  BackgroundColor #FFCDD2
+  ' Rojo pastel
+  BorderColor #D32F2F
+}
+' === FIN DE PALETA ===
+
+[*] --> PendienteDeStockYPago
+
+PendienteDeStockYPago : Cliente crea pedido online o Vendedor en tienda.
+PendienteDeStockYPago --> PendienteDePago : VerificacionStockOK / [RequierePago] / ReservarStockTemporalmente()
+PendienteDeStockYPago --> Cancelado : StockInsuficiente / NotificarCliente()
+
+PendienteDePago : Esperando confirmación de pago.
+PendienteDePago --> PagadoConfirmado : PagoRecibidoExitosamente / ConfirmarStockYPedido()
+PendienteDePago --> Cancelado : PagoFallido O TimeoutPago / LiberarStockReservado()
+
+PagadoConfirmado : Pedido pagado, stock confirmado. Listo para procesamiento.
+PagadoConfirmado --> EnPreparacion : IniciarProcesamientoPedido()
+note on link
+  Bodega recibe notificación
+  para preparar el pedido.
+end note
+
+EnPreparacion : Pedido siendo preparado en bodega.
+EnPreparacion --> ListoParaEnvio : EmpaquetadoCompletoYVerificado()
+EnPreparacion --> ParcialmenteEnviado : [Si aplica para envíos parciales]
+EnPreparacion --> EnEsperaPorStock : [Si hay un problema de stock de último minuto]
+
+ListoParaEnvio : Pedido listo para ser despachado o retirado en tienda.
+ListoParaEnvio --> EnTransito : PedidoDespachadoPorTransportista / NotificarEnvioCliente()
+ListoParaEnvio --> RetiradoEnTienda : ClienteRetiraEnTienda / EntregarPedido()
+
+EnTransito : Pedido en camino al cliente.
+EnTransito --> Entregado : TransportistaConfirmaEntrega / NotificarEntregaCliente()
+EnTransito --> ProblemaEnEnvio : ReporteIncidenciaTransportista()
+
+ParcialmenteEnviado --> EnTransito : NuevaParteDespachada()
+ParcialmenteEnviado --> Entregado : TodasLasPartesEntregadas()
+
+RetiradoEnTienda --> [*]
+Entregado --> [*]
+Cancelado --> [*]
+ProblemaEnEnvio : Resolver incidencia. Podría volver a EnTransito o Cancelado.
+ProblemaEnEnvio --> EnTransito : IncidenciaResueltaReenvio()
+ProblemaEnEnvio --> Cancelado : IncidenciaNoResuelta()
+
+@enduml

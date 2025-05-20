@@ -1,0 +1,166 @@
+@startuml Despliegue_MasterBikes
+title Diagrama de Despliegue: Sistema MasterBikes
+
+' === NUEVA PALETA MATERIAL DESIGN MEJORADA (Sintaxis Corregida) ===
+skinparam backgroundColor #ECEFF1
+' Fondo general
+skinparam defaultTextAlignment center
+skinparam Linetype ortho
+
+'/ === Colores Base === /
+skinparam ArrowColor #1E88E5
+' Flechas
+
+skinparam note {
+  BackgroundColor #FFF9C4
+  BorderColor #FBC02D
+  FontColor #37474F
+}
+' Notas
+
+'/ === Actores y Boundaries (Aunque no se usan directamente aquí, se mantienen en paleta) === /
+skinparam actor {
+    BackgroundColor #FFFFFF
+    BorderColor #546E7A
+    FontColor #263238
+    }
+' Actores
+skinparam boundary {
+    BackgroundColor #E0F2F1
+    BorderColor #00796B
+    FontColor #004D40
+    }
+' FrontendWebApp (UI)
+
+'/ === Nodos y Artefactos (Estilos Específicos) === /
+skinparam node {
+    ' Estilo base para todos los nodos
+  BackgroundColor #CFD8DC
+  BorderColor #546E7A
+  FontColor #263238
+  StereotypeFontColor #37474F
+}
+skinparam node<<Device>> {
+  BackgroundColor #E1F5FE
+  ' Azul claro para dispositivo cliente
+  BorderColor #0277BD
+}
+skinparam node<<ApplicationServer>> {
+    ' Para EC2
+  BackgroundColor #E8F5E9
+  ' Verde claro para servidores de aplicación
+  BorderColor #2E7D32
+}
+skinparam node<<GatewayNode>> {
+    ' Específico para el nodo del Gateway si es separado
+  BackgroundColor #FFF9C4
+  BorderColor #FBC02D
+}
+skinparam node<<DatabaseServer>> {
+    ' Para RDS
+  BackgroundColor #E3F2FD
+  ' Azul muy claro para servidor de BD
+  BorderColor #1565C0
+}
+skinparam node<<ExternalSystemNode>> {
+  BackgroundColor #B0BEC5
+  ' Gris para sistema externo
+  BorderColor #455A64
+}
+
+skinparam artifact {
+  BackgroundColor #FFFFFF
+  BorderColor #78909C
+  FontColor #37474F
+}
+skinparam artifact<<WebApp>> {
+  BackgroundColor #E0F2F1
+  ' claro (como UI)
+}
+skinparam artifact<<ServiceJar>> {
+  BackgroundColor #E8EAF6
+  ' como microservicio base
+}
+skinparam database<<Schema>> {
+    ' Para los esquemas/DBs lógicas dentro de RDS
+  BackgroundColor #FFFFFF
+  BorderColor #607D8B
+}
+' === FIN DE PALETA ===
+
+
+' === Definición de Nodos y Artefactos ===
+
+node "Cliente Web Browser" as ClienteBrowser <<Device>> {
+  artifact "FrontendWebApp\n(SPA: HTML, CSS, JS)" as FrontendApp <<WebApp>>
+}
+
+node "Plataforma AWS" {
+  ' Agrupador lógico para los servicios de AWS
+
+  node "Servidores de Aplicación (AWS EC2)" as EC2_App_Servers <<ApplicationServer>> {
+    
+    node "API Gateway Instance" as APIGatewayNode <<GatewayNode>> {
+      ' Podría ser una instancia EC2 dedicada o un servicio como AWS API Gateway
+      artifact "gateway-service.jar\n(Spring Cloud Gateway)" as GatewayJar <<ServiceJar>>
+    }
+
+    node "Cluster de Microservicios (EC2)" as MicroserviceClusterNode {
+      ' Representa las instancias EC2 donde corren los microservicios
+      artifact "auth-service.jar" as AuthJar <<ServiceJar>>
+      artifact "bicicletas-service.jar" as BicicletasJar <<ServiceJar>>
+      artifact "pedidos-service.jar" as PedidosJar <<ServiceJar>>
+      artifact "notificaciones-service.jar" as NotificacionesJar <<ServiceJar>>
+      ' Añadido
+      artifact "reportes-service.jar" as ReportesJar <<ServiceJar>>
+      artifact "integracion-proveedor.jar" as ProveedorJar <<ServiceJar>>
+    }
+  }
+
+  node "Servidor de Base de Datos (AWS RDS)" as RDS_Server <<DatabaseServer>> {
+    database "AuthSchema" as AuthDBSchema <<Schema>>
+    ' Representa el esquema/DB para Auth
+    database "BicicletasSchema" as BicicletasDBSchema <<Schema>>
+    ' Esquema/DB para Bicicletas
+    database "PedidosSchema" as PedidosDBSchema <<Schema>>
+    ' Esquema/DB para Pedidos
+    database "ReportesData" as ReportesDBSchema <<Schema>>
+    ' Esquema/DB para Reportes
+    note right of RDS_Server
+      Instancia Oracle en RDS
+      conteniendo los esquemas
+      lógicos de los microservicios.
+    end note
+  }
+}
+
+node "Servidor Externo SHIMANO" as ShimanoNode <<ExternalSystemNode>> {
+  artifact "SHIMANO REST API" as ShimanoAPI_Artifact
+}
+
+
+' === Conexiones de Despliegue y Comunicación ===
+
+FrontendApp --down-> GatewayJar : HTTPS (API Requests)
+' El Frontend se comunica con el API Gateway
+
+GatewayJar --down--> AuthJar : HTTP (AuthN/AuthZ)
+GatewayJar --down--> BicicletasJar : HTTP (Servicios Bicicletas)
+GatewayJar --down--> PedidosJar : HTTP (Servicios Pedidos)
+GatewayJar --down--> NotificacionesJar : HTTP (Servicios Notificaciones)
+GatewayJar --down--> ReportesJar : HTTP (Servicios Reportes)
+GatewayJar --down--> ProveedorJar : HTTP (Servicios Integración)
+
+' Conexiones de los servicios a sus esquemas de BD
+AuthJar ..> AuthDBSchema : JDBC/JPA
+BicicletasJar ..> BicicletasDBSchema : JDBC/JPA
+PedidosJar ..> PedidosDBSchema : JDBC/JPA
+ReportesJar ..> ReportesDBSchema : JDBC/JPA
+ReportesJar ..> BicicletasDBSchema : JDBC/JPA (Lectura)
+ReportesJar ..> PedidosDBSchema : JDBC/JPA (Lectura)
+
+
+' Conexión a sistema externo
+ProveedorJar -right-> ShimanoAPI_Artifact : HTTPS (API Proveedor)
+
+@enduml

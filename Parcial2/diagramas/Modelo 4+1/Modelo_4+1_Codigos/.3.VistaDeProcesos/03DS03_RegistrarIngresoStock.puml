@@ -1,0 +1,168 @@
+@startuml SupervisorRegistraIngresoStock_MasterBikes
+title Diagrama de Secuencia: Supervisor Registra Ingreso de Stock
+
+' === NUEVA PALETA MATERIAL DESIGN MEJORADA ===
+skinparam backgroundColor #ECEFF1
+' Material Blue Grey 50 (fondo muy suave)
+skinparam sequenceMessageAlign center
+skinparam defaultTextAlignment center
+
+skinparam ArrowColor #1E88E5
+' Material Blue 600 (azul principal para flechas)
+skinparam note {
+  BackgroundColor #FFF9C4
+  ' Material Yellow 100 (amarillo pastel para notas)
+  BorderColor #FBC02D
+  ' Material Yellow 700
+  FontColor #37474F
+  ' Gris oscuro azulado para texto de nota
+}
+
+skinparam actor {
+  BackgroundColor #FFFFFF
+  ' Fondo blanco
+  BorderColor #546E7A
+  ' Material Blue Grey 600
+  FontColor #263238
+  ' Material Blue Grey 900 (texto oscuro)
+}
+skinparam boundary {
+' AdminWebApp
+  BackgroundColor #E0F2F1
+  ' Material Teal 50 (verde azulado muy claro)
+  BorderColor #00796B
+  ' Material Teal 700
+  FontColor #004D40
+  ' Teal muy oscuro
+}
+skinparam participant<<Gateway>> {
+' APIGateway
+  BackgroundColor #E1F5FE
+  ' Material Light Blue 50
+  BorderColor #0277BD
+  ' Material Light Blue 800
+  FontColor #01579B
+  ' Light Blue muy oscuro
+}
+skinparam participant<<Microservice>> {
+' Base para Microservicios
+  BackgroundColor #E8EAF6
+  ' Material Indigo 50 (lila/índigo muy claro)
+  BorderColor #303F9F
+  ' Material Indigo 700
+  FontColor #1A237E
+  ' Indigo muy oscuro
+}
+skinparam participant<<AuthService>> {
+  BackgroundColor #E3F2FD
+  ' Material Blue 100 (azul claro)
+  BorderColor #1565C0
+  ' Material Blue 800
+  FontColor #0D47A1
+  ' Azul muy oscuro
+}
+skinparam participant<<BicicletasService>> {
+' Asumimos que este servicio maneja el inventario de productos/piezas
+  BackgroundColor #E8F5E9
+  ' Material Green 50 (verde muy claro)
+  BorderColor #2E7D32
+  ' Material Green 800
+  FontColor #1B5E20
+  ' Verde muy oscuro
+}
+' Definiciones de paleta para otros servicios por consistencia, aunque no se usen directamente aquí
+skinparam participant<<PedidosService>> {
+  BackgroundColor #FFF3E0
+  ' Material Orange 50 (naranja muy claro)
+  BorderColor #EF6C00
+  ' Material Orange 800
+  FontColor #E65100
+  ' Naranja muy oscuro
+}
+skinparam participant<<NotificacionesService>> {
+  BackgroundColor #FFFDE7
+  ' Material Yellow 50 (amarillo muy pálido)
+  BorderColor #F9A825
+  ' Material Yellow 800
+  FontColor #F57F17
+  ' Amarillo/ámbar oscuro
+}
+' === FIN DE PALETA ===
+
+' === Declaración de Participantes ===
+actor Supervisor
+boundary "AdminWebApp" as AdminUI
+' Interfaz de administración para Supervisores
+participant APIGateway <<Gateway>>
+participant "Auth-Service" as AuthService <<Microservice>>
+participant "Bicicletas-Service" as BicicletasService <<Microservice>>
+' Responsable del inventario
+
+' === Flujo del Diagrama ===
+
+== 1. Autenticación del Supervisor ==
+Supervisor -> AdminUI : Iniciar Sesión Admin (usuario, clave)
+activate AdminUI
+AdminUI -> APIGateway : POST /auth/admin/login (credenciales)
+activate APIGateway
+APIGateway -> AuthService : Validar Credenciales Admin (credenciales)
+activate AuthService
+AuthService --> APIGateway #27AE60 : Autenticación Exitosa (tokenJWTAdmin)
+' Verde para éxito
+deactivate AuthService
+APIGateway --> AdminUI #27AE60 : Sesión Admin Iniciada (tokenJWTAdmin)
+deactivate APIGateway
+AdminUI --> Supervisor : Acceso Concedido al Panel Admin
+deactivate AdminUI
+
+== 2. Registro de Ingreso de Stock Físico ==
+Supervisor -> AdminUI : Registrar Ingreso Stock (productoId, cantidadRecibida, refDoc, tokenJWTAdmin)
+activate AdminUI
+note left of Supervisor
+  Supervisor ingresa datos de la guía
+  de despacho o factura del proveedor.
+end note
+AdminUI -> APIGateway : POST /stock/ingresos (datosIngreso, tokenJWTAdmin)
+activate APIGateway
+
+' APIGateway valida el token de administrador (implícito)
+
+APIGateway -> BicicletasService : ActualizarStockPorIngreso(productoId, cantidad, refDoc)
+activate BicicletasService
+
+note right of BicicletasService
+  Bicicletas-Service valida el productoId
+  e incrementa el stock internamente en su BD.
+end note
+BicicletasService -> BicicletasService : ProcesarActualizacionStockBD()
+' Mensaje reflexivo que encapsula validación y actualización de BD
+
+alt #F5F5F5 Ingreso Registrado Correctamente
+' Fondo gris muy claro para 'alt'
+    BicicletasService --> APIGateway #27AE60 : Stock Actualizado (productoId, nuevoTotal)
+    ' Verde para éxito
+else #FFEBEE Error al Registrar Ingreso
+' Rojo pastel para fondo de error
+    BicicletasService --> APIGateway #E53935 : Error: Fallo al actualizar stock
+    ' Rojo Material para mensaje de error
+end
+deactivate BicicletasService
+
+
+alt #F5F5F5 RespuestaExitosaAlUsuario ' <--- COLOR AÑADIDO AQUÍ
+' Fondo gris muy claro para 'alt'
+    APIGateway --> AdminUI #27AE60 : Ingreso Confirmado (productoId, nuevoTotal)
+    ' Verde para éxito
+    deactivate APIGateway
+    AdminUI --> Supervisor : Stock para #{productoId} actualizado.
+    deactivate AdminUI
+else #FFEBEE RespuestaConErrorAlUsuario ' <--- COLOR AÑADIDO AQUÍ
+' Rojo pastel para fondo de error
+    APIGateway --> AdminUI #E53935 : Error al Registrar Ingreso
+    ' Rojo Material para mensaje de error
+    deactivate APIGateway
+    AdminUI --> Supervisor : Error: No se pudo registrar el ingreso.
+    deactivate AdminUI
+end
+
+@enduml

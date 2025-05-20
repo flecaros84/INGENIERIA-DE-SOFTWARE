@@ -1,0 +1,141 @@
+@startuml RegistrarVenta_MasterBikes
+title Diagrama de Secuencia: Registro de Venta en MasterBikes
+
+' === NUEVA PALETA MATERIAL DESIGN MEJORADA ===
+skinparam backgroundColor #ECEFF1
+skinparam sequenceMessageAlign center
+skinparam defaultTextAlignment center
+
+skinparam ArrowColor #1E88E5
+skinparam note {
+  BackgroundColor #FFF9C4
+  BorderColor #FBC02D
+  FontColor #37474F
+}
+
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #546E7A
+  FontColor #263238
+}
+skinparam boundary {
+    ' FrontendWebApp
+  BackgroundColor #E0F2F1
+  BorderColor #00796B
+  FontColor #004D40
+}
+skinparam participant<<Gateway>> {
+    ' APIGateway
+  BackgroundColor #E1F5FE
+  BorderColor #0277BD
+  FontColor #01579B
+}
+skinparam participant<<Microservice>> {
+    ' Base para Microservicios
+  BackgroundColor #E8EAF6
+  BorderColor #303F9F
+  FontColor #1A237E
+}
+skinparam participant<<AuthService>> {
+  BackgroundColor #E3F2FD
+  BorderColor #1565C0
+  FontColor #0D47A1
+}
+skinparam participant<<BicicletasService>> {
+  BackgroundColor #E8F5E9
+  BorderColor #2E7D32
+  FontColor #1B5E20
+}
+skinparam participant<<PedidosService>> {
+  BackgroundColor #FFF3E0
+  BorderColor #EF6C00
+  FontColor #E65100
+}
+skinparam participant<<NotificacionesService>> {
+  BackgroundColor #FFFDE7
+  BorderColor #F9A825
+  FontColor #F57F17
+}
+' === FIN DE PALETA ===
+
+' === Declaración de Participantes (Nombres del SRS MasterBikes) ===
+actor Cliente
+boundary FrontendWebApp as UI
+participant APIGateway <<Gateway>>
+participant "Auth-Service" as AuthService <<Microservice>>
+participant "Bicicletas-Service" as BicicletasService <<Microservice>>
+participant "Pedidos-Service" as PedidosService <<Microservice>>
+participant "Notificaciones-Service" as NotificacionesService <<Microservice>>
+
+' === Flujo del Diagrama ===
+
+== 1. Autenticación del Cliente ==
+Cliente -> UI : Iniciar Sesión (usuario, clave)
+activate UI
+UI -> APIGateway : POST /auth/login (credenciales)
+activate APIGateway
+APIGateway -> AuthService : Validar Credenciales (credenciales)
+activate AuthService
+AuthService --> APIGateway #27AE60 : Autenticación Exitosa (tokenJWT)
+' Verde para éxito
+deactivate AuthService
+APIGateway --> UI #27AE60 : Sesión Iniciada (tokenJWT)
+deactivate APIGateway
+UI --> Cliente : Bienvenido
+deactivate UI
+
+== 2. Proceso de Compra de Producto ==
+Cliente -> UI : Seleccionar Producto y Comprar (productoId, cantidad, tokenJWT)
+activate UI
+note left of Cliente
+  Cliente añade producto al carrito
+  e intenta comprar.
+end note
+UI -> APIGateway : POST /pedidos (datosCompra, tokenJWT)
+activate APIGateway
+
+APIGateway -> PedidosService : Crear Pedido Venta (usuarioId, productoId, cantidad)
+activate PedidosService
+
+note right of PedidosService
+  PedidosService coordina con
+  Bicicletas-Service para el stock.
+end note
+PedidosService -> BicicletasService : Verificar y Descontar Stock (productoId, cantidad)
+activate BicicletasService
+alt #F5F5F5 Stock OK
+' Fondo gris muy claro para 'alt'
+    BicicletasService --> PedidosService #27AE60 : Stock Actualizado
+    ' Verde para éxito
+else #FFEBEE Stock Insuficiente ' Rojo pastel para fondo de error
+    BicicletasService --> PedidosService #E53935 : Error: Stock No Disponible
+    ' Rojo Material para mensaje de error
+    deactivate BicicletasService
+    PedidosService --> APIGateway #E53935 : Fallo al Crear Pedido (Stock)
+    deactivate PedidosService
+    APIGateway --> UI #E53935 : Error en Compra ("Stock no disponible")
+    deactivate APIGateway
+    UI --> Cliente : Error: Producto sin stock
+    deactivate UI
+end
+deactivate BicicletasService
+
+PedidosService -> PedidosService : Registrar Venta Interna()
+' Mensaje reflexivo
+PedidosService --> APIGateway #27AE60 : Pedido Registrado (pedidoId, detalles)
+' Verde para éxito
+deactivate PedidosService
+
+APIGateway -> NotificacionesService : Enviar Confirmación de Venta (emailCliente, pedidoId)
+activate NotificacionesService
+NotificacionesService -> NotificacionesService : Preparar y Enviar Email()
+' Acción interna
+deactivate NotificacionesService
+
+APIGateway --> UI #27AE60 : Compra Exitosa (pedidoId)
+' Verde para éxito
+deactivate APIGateway
+UI --> Cliente : Venta Confirmada (Pedido #{pedidoId})
+deactivate UI
+
+@enduml

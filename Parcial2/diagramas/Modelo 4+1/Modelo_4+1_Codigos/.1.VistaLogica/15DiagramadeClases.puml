@@ -1,0 +1,231 @@
+@startuml DiagramaDeClases_MasterBikes
+title Diagrama de Clases Principal: Dominio MasterBikes (Refinado)
+
+' === NUEVA PALETA MATERIAL DESIGN MEJORADA (Sintaxis Corregida) ===
+skinparam backgroundColor #ECEFF1
+' Material Blue Grey 50 (fondo muy suave)
+skinparam defaultTextAlignment center
+skinparam Linetype ortho
+
+skinparam ArrowColor #1E88E5
+' Material Blue 600 (azul principal para flechas)
+skinparam note {
+  BackgroundColor #FFF9C4
+  ' Material Yellow 100 (amarillo pastel para notas)
+  BorderColor #FBC02D
+  ' Material Yellow 700
+  FontColor #37474F
+  ' Gris oscuro azulado para texto de nota
+}
+skinparam class {
+  BackgroundColor #FFFFFF
+  ' Fondo blanco para clases
+  BorderColor #B0BEC5
+  ' Material Blue Grey 200 para borde
+  FontColor #37474F
+  ' Gris oscuro azulado para texto
+  HeaderBackgroundColor #E8EAF6
+  ' Material Indigo 50 para cabecera de clase
+  AttributeFontColor #263238
+  ' Material Blue Grey 900 para atributos
+  StereotypeFontColor #1A237E
+  ' Indigo muy oscuro para estereotipos
+}
+' === FIN DE PALETA ===
+
+' === Definición de Clases y Atributos ===
+
+abstract class Usuario {
+  + idUsuario: String
+  + nombre: String
+  + apellido: String
+  + email: String
+  + telefono: String
+  # passwordHash: String
+  --
+  + iniciarSesion()
+  + cerrarSesion()
+  + actualizarPerfil()
+}
+
+class Cliente extends Usuario {
+  + preferenciasNotificaciones: Boolean
+  ' Atributos específicos del cliente
+}
+note right of Cliente : Cliente hereda los atributos comunes de Usuario.
+
+class Tecnico extends Usuario {
+  + especialidad: String
+}
+
+class Vendedor extends Usuario {
+  + sucursalAsignada: String
+}
+
+class Supervisor extends Usuario {
+  + areaSupervisada: String
+}
+
+
+enum TipoProducto {
+  BICICLETA
+  PIEZA_REPUESTO
+  ACCESORIO
+}
+note top of TipoProducto : Tipos de productos manejados.
+
+class Producto {
+  + idProducto: String
+  + nombre: String
+  + descripcion: String
+  + precioVenta: Double
+  + marca: String
+  + tipo: TipoProducto
+  + stockActual: Integer
+  --
+  + actualizarStock(cantidad: Integer)
+  + obtenerDetalles(): String
+}
+
+class Bicicleta extends Producto {
+  + numeroSerie: String
+  + aro: Integer
+  + color: String
+  + estadoBicicleta: String
+  ' Disponible, Arrendada, EnReparacion
+}
+
+class PiezaRepuesto extends Producto {
+  + compatibilidad: String
+  ' Modelos/Marcas compatibles
+}
+
+class Accesorio extends Producto {
+  + categoria: String
+  ' Cascos, Luces, etc.
+}
+
+class Arriendo {
+  + idArriendo: String
+  + fechaInicio: Date
+  + fechaFinEstimada: Date
+  + fechaDevolucionReal: Date
+  + estado: String
+  ' Solicitado, Confirmado, Activo, Finalizado, ConMulta
+  + montoTotal: Double
+  --
+  + calcularCosto()
+  + finalizar()
+}
+
+class Reparacion {
+  + idReparacion: String
+  + fechaSolicitud: Date
+  + fechaEstimadaEntrega: Date
+  + descripcionProblema: String
+  + diagnosticoTecnico: String
+  + estado: String
+  ' Solicitada, EnEvaluacion, EsperandoRepuestos, EnReparacion, Lista, Entregada
+  + costoTotal: Double
+  --
+  + actualizarEstado()
+  + agregarPieza()
+}
+
+class ItemReparacion {
+  + cantidadUtilizada: Integer
+  + costoPiezaAlMomento: Double
+}
+note top of ItemReparacion : Detalle de piezas usadas en una reparación.
+
+class PedidoVenta {
+  + idPedido: String
+  + fechaPedido: Date
+  + estado: String
+  ' Pendiente, Pagado, EnPreparacion, Enviado, Entregado, Cancelado
+  + direccionEnvio: String
+  + montoTotal: Double
+  --
+  + calcularTotal()
+  + actualizarEstadoEnvio()
+}
+
+class ItemPedido {
+  + cantidad: Integer
+  + precioUnitarioAlMomento: Double
+  --
+  + calcularSubtotal()
+}
+note top of ItemPedido : Detalle de productos en un pedido de venta.
+
+class Notificacion {
+  + idNotificacion: String
+  + tipo: String
+  ' Email, SMS
+  + destinatario: String
+  ' email o telefono del Usuario
+  + asunto: String
+  + cuerpo: String
+  + fechaEnvio: Date
+  + estadoEnvio: String
+  ' Enviada, Fallida
+}
+
+class Promocion {
+  + idPromocion: String
+  + nombre: String
+  + descripcion: String
+  + fechaInicio: Date
+  + fechaFin: Date
+  + tipoDescuento: String
+  ' Porcentaje, MontoFijo
+  + valorDescuento: Double
+}
+
+
+' === Relaciones entre Clases ===
+
+' Herencia (ya definida con 'extends')
+' Usuario <|-- Cliente (si no tuviera el atributo rol)
+
+' Asociaciones Cliente
+Cliente "1" -- "*" Arriendo : solicita
+Cliente "1" -- "*" Reparacion : solicita_reparacion_para
+Cliente "1" -- "*" PedidoVenta : realiza_compra
+Cliente "1" -- "*" Promocion : puede_recibir
+' Un cliente puede recibir muchas promociones, una promoción puede ser para muchos clientes (si es general)
+' Si una promoción es específica para un cliente, sería "1" -- "1" o "1" -- "*" desde Promoción a Cliente
+
+' Asociaciones Arriendo y Reparación con Bicicleta
+Arriendo "1" -- "1" Bicicleta : bicicleta_arrendada
+Reparacion "1" -- "1" Bicicleta : bicicleta_en_reparacion
+
+' Relación muchos-a-muchos Reparacion <-> PiezaRepuesto
+Reparacion "1" -- "*" ItemReparacion : items_reparacion
+ItemReparacion "*" -- "1" PiezaRepuesto : pieza_utilizada
+
+' Relación PedidoVenta <-> Producto
+PedidoVenta "1" -- "*" ItemPedido : items_del_pedido
+ItemPedido "*" -- "1" Producto : producto_vendido
+
+' Asociaciones con Notificacion (Dependencias de Uso)
+Arriendo ..> Notificacion : notifica_eventos_de
+Reparacion ..> Notificacion : notifica_eventos_de
+PedidoVenta ..> Notificacion : notifica_eventos_de
+Usuario ..> Notificacion : es_destinatario_de
+' O Cliente, Tecnico, etc.
+
+' Asociaciones con Tecnico (si se define como subclase)
+' Tecnico "0..1" -- "*" Reparacion : asignado_a
+' Un técnico puede no tener reparaciones asignadas, o muchas.
+' Una reparación es asignada a 0 o 1 técnico (o un equipo).
+
+' Nota sobre el stock
+note bottom of Producto
+  El atributo 'stockActual' en Producto representa
+  el inventario. Para sistemas más complejos,
+  una clase 'MovimientoStock' o 'StockItem'
+  podría ser más adecuada.
+end note
+
+@enduml

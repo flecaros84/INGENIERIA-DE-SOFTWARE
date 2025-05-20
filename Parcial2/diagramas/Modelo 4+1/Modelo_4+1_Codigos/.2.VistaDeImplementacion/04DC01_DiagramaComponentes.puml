@@ -1,0 +1,135 @@
+@startuml Componentes_MasterBikes
+title Diagrama de Componentes: Sistema MasterBikes
+
+' === NUEVA PALETA MATERIAL DESIGN MEJORADA ===
+skinparam backgroundColor #ECEFF1
+skinparam defaultTextAlignment center
+skinparam Linetype ortho
+' Para líneas más ordenadas (opcional)
+
+skinparam ArrowColor #1E88E5
+skinparam note {
+  BackgroundColor #FFF9C4
+  BorderColor #FBC02D
+  FontColor #37474F
+}
+
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #546E7A
+  FontColor #263238
+}
+skinparam boundary {
+' FrontendWebApp
+  BackgroundColor #E0F2F1
+  BorderColor #00796B
+  FontColor #004D40
+}
+skinparam component<<Gateway>> {
+' APIGateway
+  BackgroundColor #E1F5FE
+  BorderColor #0277BD
+  FontColor #01579B
+}
+skinparam component<<Microservice>> {
+' Base para Microservicios
+  BackgroundColor #E8EAF6
+  BorderColor #303F9F
+  FontColor #1A237E
+}
+skinparam component<<AuthService>> {
+  BackgroundColor #E3F2FD
+  BorderColor #1565C0
+  FontColor #0D47A1
+}
+skinparam component<<BicicletasService>> {
+  BackgroundColor #E8F5E9
+  BorderColor #2E7D32
+  FontColor #1B5E20
+}
+skinparam component<<PedidosService>> {
+  BackgroundColor #FFF3E0
+  BorderColor #EF6C00
+  FontColor #E65100
+}
+skinparam component<<NotificacionesService>> {
+  BackgroundColor #FFFDE7
+  BorderColor #F9A825
+  FontColor #F57F17
+}
+skinparam component<<IntegracionProveedorService>> {
+  BackgroundColor #ECEFF1
+  BorderColor #455A64
+  FontColor #263238
+}
+skinparam component<<ReportesService>> {
+  BackgroundColor #F3E5F5
+  BorderColor #6A1B9A
+  FontColor #4A148C
+}
+skinparam database {
+  BackgroundColor #CFD8DC
+  BorderColor #455A64
+  FontColor #263238
+}
+skinparam component<<ExternalSystem>> {
+    BackgroundColor #B0BEC5
+    BorderColor #455A64
+    FontColor #263238
+}
+
+' === FIN DE PALETA ===
+
+' === Declaración de Componentes ===
+boundary "FrontendWebApp" as Frontend <<UI>>
+component "API Gateway" as Gateway <<Gateway>>
+
+package "Microservicios MasterBikes" <<Node>> {
+  ' Node para agrupar visualmente, podría ser un servidor
+  component "Auth-Service" as AuthService <<AuthService>> <<Microservice>>
+  component "Bicicletas-Service" as BicicletasService <<BicicletasService>> <<Microservice>>
+  component "Pedidos-Service" as PedidosService <<PedidosService>> <<Microservice>>
+  component "Notificaciones-Service" as NotificacionesService <<NotificacionesService>> <<Microservice>>
+  component "Reportes-Service" as ReportesService <<ReportesService>> <<Microservice>>
+  component "Integracion-Proveedor" as IntegracionProveedorService <<IntegracionProveedorService>> <<Microservice>>
+  
+}
+
+package "Persistencia de Datos" <<Database_Server>> {
+  database "AuthDB" as DB_Auth <<Database>>
+  database "BicicletasDB" as DB_Bicicletas <<Database>>
+  database "PedidosDB" as DB_Pedidos <<Database>>
+  database "ReportesDB_Cache" as DB_Reportes <<Database>>
+}
+
+component "SHIMANO API" as ShimanoAPI <<ExternalSystem>>
+
+' === Interfaces (Representación simplificada con dependencias directas) ===
+
+Frontend ..> Gateway : Consume API Pública
+' El Gateway expone una API unificada
+
+Gateway ..> AuthService : Enruta a Auth API
+Gateway ..> BicicletasService : Enruta a Bicicletas API
+Gateway ..> PedidosService : Enruta a Pedidos API
+Gateway ..> ReportesService : Enruta a Reportes API
+Gateway ..> NotificacionesService : Enruta a\nNotificaciones API
+
+' Dependencias entre Microservicios
+PedidosService ..> BicicletasService : Consulta/Actualiza\nStock
+BicicletasService ..> IntegracionProveedorService : Consulta Proveedor
+IntegracionProveedorService ..> ShimanoAPI : Llama a API Externa
+
+' Acceso a Bases de Datos (Cada servicio accede a su propia BD)
+AuthService ..> DB_Auth : Persistencia\nUsuarios
+BicicletasService ..> DB_Bicicletas : Persistencia\nBicicletas/Stock/Servicios
+PedidosService ...> DB_Pedidos : Persistencia Pedidos
+ReportesService ..> DB_Bicicletas : Lee datos para reportes
+ReportesService ..> DB_Pedidos : Lee datos para reportes
+' ReportesService podría tener su propia DB_Reportes si consolida datos
+
+' Notificaciones pueden ser usadas por varios servicios
+PedidosService ..> NotificacionesService : Solicita Notificación
+BicicletasService ..> NotificacionesService : Solicita Notificación
+
+@enduml

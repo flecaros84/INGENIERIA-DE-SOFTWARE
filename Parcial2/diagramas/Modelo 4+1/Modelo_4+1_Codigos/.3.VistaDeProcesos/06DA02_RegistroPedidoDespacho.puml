@@ -1,0 +1,153 @@
+@startuml Actividad_VentaConDespacho_MasterBikes
+title Diagrama de Actividad: Proceso de Venta de Producto con Despacho
+
+' === PALETA MATERIAL DESIGN MEJORADA (Sintaxis Corregida) ===
+skinparam backgroundColor #ECEFF1
+' Fondo general del diagrama
+skinparam sequenceMessageAlign center
+' Aunque es de actividad, no afecta negativamente
+skinparam defaultTextAlignment center
+
+skinparam ArrowColor #1E88E5
+' Color principal para flechas
+skinparam note {
+  BackgroundColor #FFF9C4
+  BorderColor #FBC02D
+  FontColor #37474F
+}
+
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #546E7A
+  FontColor #263238
+}
+skinparam partition {
+' Estilo para los carriles (swimlanes)
+  BackgroundColor #E0F2F1
+  BorderColor #00796B
+  FontColor #004D40
+  ArrowColor #1E88E5
+  ' Para flechas dentro del carril si se anidan
+}
+skinparam activity {
+  BackgroundColor #FFFFFF
+  ' Fondo blanco para actividades
+  BorderColor #546E7A
+  FontColor #263238
+  DiamondBackgroundColor #E1F5FE
+  ' Color para nodos de decisión (rombos)
+  DiamondBorderColor #0277BD
+}
+skinparam activityStart {
+  Color #27AE60
+  ' Verde para inicio
+}
+skinparam activityEnd {
+  Color #E53935
+  ' Rojo para fin
+}
+' === FIN DE PALETA ===
+
+' === Definición de Carriles (Swimlanes) ===
+|Cliente|
+start
+:Iniciar Sesión (Si es necesario);
+:Navegar y Seleccionar Productos;
+:Añadir Productos al Carrito de Compras;
+
+|FrontendWebApp (UI)|
+:Mostrar Carrito y Solicitar Confirmación de Compra;
+note right
+  Cliente revisa el carrito
+  y procede a finalizar la compra.
+  Se pueden solicitar datos de envío aquí.
+end note
+
+|Cliente|
+:Confirmar Compra y Datos de Envío;
+
+|FrontendWebApp (UI)|
+:Enviar Solicitud de Creación de Pedido al Backend;
+' (Vía APIGateway, implícito)
+
+|Bicicletas-Service|
+' Este servicio es consultado por Pedidos-Service para el stock
+:Recibir Consulta de Stock para Pedido;
+' (Invocado por Pedidos-Service)
+if (¿Todos los Productos del Pedido con Stock Suficiente?) then (Sí)
+  :Reservar/Descontar Stock de Productos;
+  ' Actualiza el inventario en su BD
+  :Confirmar Disponibilidad de Stock a Pedidos-Service;
+else (No)
+  :Informar Stock Insuficiente a Pedidos-Service;
+endif
+
+|Pedidos-Service|
+:Recibir Solicitud de Creación de Pedido;
+:Solicitar Verificación de Stock a Bicicletas-Service;
+' Este es el punto de interacción con el carril Bicicletas-Service
+
+if (¿Stock Confirmado por Bicicletas-Service?) then (Sí)
+  :Crear Nuevo Pedido en el Sistema;
+  note right
+    Se genera un ID de pedido.
+    Estado inicial: "Pedido Creado" o "Pendiente de Pago".
+    Asumimos pago exitoso para este flujo.
+  end note
+  :Actualizar Estado del Pedido a "En Preparación";
+
+  |Notificaciones-Service|
+  :Preparar Email de Confirmación de Pedido;
+  :Enviar Email "Pedido Confirmado" al Cliente;
+  note left
+    Incluye ID de pedido
+    y detalles.
+  end note
+
+  |Pedidos-Service|
+  ' Continuación del flujo de Pedidos-Service
+  :Marcar Pedido para Despacho;
+  note right
+    Aquí podría haber una integración
+    con un módulo de logística o una
+    notificación a la bodega.
+    Para simplificar, es una actividad interna.
+  end note
+  :Actualizar Estado del Pedido a "Listo para Despacho";
+  :Actualizar Estado del Pedido a "En Tránsito";
+  ' Cuando el pedido sale de bodega.
+
+  |Notificaciones-Service|
+  :Preparar Email de Notificación de Envío;
+  :Enviar Email "Pedido Enviado" al Cliente;
+  note left
+    Puede incluir
+    número de seguimiento.
+  end note
+
+  |Pedidos-Service|
+  ' Esperar confirmación de entrega (puede ser de un sistema externo o manual)
+  :Recibir Confirmación de Entrega;
+  :Actualizar Estado del Pedido a "Entregado";
+
+  |Notificaciones-Service|
+  :Preparar Email de Notificación de Entrega;
+  :Enviar Email "Pedido Entregado" al Cliente;
+
+  |FrontendWebApp (UI)|
+  :Recibir Actualización de Estado del Pedido;
+  :Mostrar "Pedido Entregado" al Cliente;
+
+else (No, Stock Insuficiente)
+  |FrontendWebApp (UI)|
+  ' Se informa directamente en la UI o Pedidos-Service podría notificar
+  :Recibir Información de Stock Insuficiente (desde Pedidos-Service);
+  :Mostrar Mensaje "Stock Insuficiente" al Cliente;
+endif
+
+
+|Cliente|
+:Visualizar Estado del Pedido / Recibir Notificaciones;
+stop
+
+@enduml
