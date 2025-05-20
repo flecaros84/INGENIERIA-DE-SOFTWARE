@@ -1,0 +1,101 @@
+@startuml CasosDeUso_PersonalInterno_MasterBikes
+title Diagrama de Casos de Uso 02: Interacciones del Personal Interno
+
+' === NUEVA PALETA MATERIAL DESIGN MEJORADA (Aplicada consistentemente) ===
+skinparam backgroundColor #ECEFF1
+skinparam defaultTextAlignment center
+skinparam ArrowColor #1E88E5
+skinparam note {
+  BackgroundColor #FFF9C4
+  BorderColor #FBC02D
+  FontColor #37474F
+  }
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #546E7A
+  FontColor #263238
+  StereotypeFontColor #37474F
+  }
+skinparam usecase {
+  BackgroundColor #E0F2F1
+  BorderColor #00796B
+  FontColor #004D40
+  StereotypeFontColor #004D40
+  }
+' === FIN DE PALETA ===
+
+left to right direction
+
+actor Técnico
+actor Vendedor
+actor "Sistema SHIMANO" as ShimanoAPI <<External>>
+' Para mostrar la interacción
+
+rectangle "Sistema MasterBikes" as SystemBoundary {
+  
+  usecase "Iniciar Sesión Personal" as UC_LoginPersonal
+
+  ' --- Casos de Uso del Técnico ---
+  usecase "Ver Solicitudes de Reparación" as UC_VerSolicitudesRep
+  usecase "Confirmar Viabilidad de Reparación" as UC_ConfirmarViabilidadRep
+  usecase "Consultar Stock de Piezas" as UC_ConsultarStockPiezas
+  usecase "Actualizar Estado de Reparación" as UC_ActualizarEstadoRep
+  usecase "Consultar Stock Externo (SHIMANO)" as UC_ConsultarShimano
+  ' Movido aquí como capacidad
+  
+  ' --- Casos de Uso del Vendedor ---
+  usecase "Registrar Pedidos y Ventas" as UC_RegistrarVentas
+  usecase "Consultar Stock Productos" as UC_ConsultarStockProductos
+  ' Renombrado para claridad
+  usecase "Agregar Despacho al Pedido" as UC_AgregarDespacho
+
+  ' --- Caso de Uso Transversal (funcionalidad del sistema) ---
+  usecase "Enviar Notificación" as UC_EnviarNotificacion
+}
+
+' === Conexiones Actor - Casos de Uso ===
+Técnico -- UC_LoginPersonal
+Técnico -- UC_VerSolicitudesRep
+Técnico -- UC_ConfirmarViabilidadRep
+Técnico -- UC_ConsultarStockPiezas
+' El técnico consulta stock (interno y/o externo)
+Técnico -- UC_ActualizarEstadoRep
+
+Vendedor -- UC_LoginPersonal
+Vendedor -- UC_RegistrarVentas
+Vendedor -- UC_ConsultarStockProductos
+Vendedor -- UC_AgregarDespacho
+
+' === Relaciones entre Casos de Uso ===
+UC_VerSolicitudesRep ..> UC_LoginPersonal : <<include>>
+UC_ConfirmarViabilidadRep ..> UC_LoginPersonal : <<include>>
+UC_ConsultarStockPiezas ..> UC_LoginPersonal : <<include>>
+UC_ActualizarEstadoRep ..> UC_LoginPersonal : <<include>>
+
+UC_RegistrarVentas ..> UC_LoginPersonal : <<include>>
+UC_ConsultarStockProductos ..> UC_LoginPersonal : <<include>>
+UC_AgregarDespacho ..> UC_LoginPersonal : <<include>>
+
+' Consultar stock de piezas puede incluir consultar al proveedor externo
+UC_ConsultarStockPiezas ..> UC_ConsultarShimano : <<extend>>
+' Se usa <<extend>> porque la consulta externa solo ocurre si la pieza no está internamente
+' o si se necesita información adicional del proveedor.
+UC_ConsultarShimano -- ShimanoAPI
+' El caso de uso del sistema interactúa con la API externa
+
+' Casos de uso que envían notificaciones
+UC_ConfirmarViabilidadRep ..> UC_EnviarNotificacion : <<include>>
+' Ej: notificar al cliente
+UC_ActualizarEstadoRep ..> UC_EnviarNotificacion : <<include>>
+' Ej: notificar al cliente
+UC_RegistrarVentas ..> UC_EnviarNotificacion : <<include>>
+' Ej: confirmación de venta
+
+
+note bottom of SystemBoundary
+  Casos de uso para roles operativos internos:
+  Técnico y Vendedor, incluyendo interacciones
+  con sistemas externos para stock.
+end note
+
+@enduml

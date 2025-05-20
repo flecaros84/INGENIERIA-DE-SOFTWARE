@@ -1,0 +1,101 @@
+@startuml CasosDeUso_Cliente_MasterBikes
+title Diagrama de Casos de Uso 01: Interacciones del Cliente
+
+' === NUEVA PALETA MATERIAL DESIGN MEJORADA (Aplicada consistentemente) ===
+skinparam backgroundColor #ECEFF1
+' Material Blue Grey 50 (fondo muy suave)
+skinparam defaultTextAlignment center
+' skinparam Linetype ortho ' Linetype no es muy relevante para Casos de Uso, se puede omitir
+
+skinparam ArrowColor #1E88E5
+' Material Blue 600 (azul principal para flechas)
+skinparam note {
+  BackgroundColor #FFF9C4
+  ' Material Yellow 100 (amarillo pastel para notas)
+  BorderColor #FBC02D
+  ' Material Yellow 700
+  FontColor #37474F
+  ' Gris oscuro azulado para texto de nota
+}
+
+skinparam actor {
+  BackgroundColor #FFFFFF
+  ' Fondo blanco
+  BorderColor #546E7A
+  ' Material Blue Grey 600
+  FontColor #263238
+  ' Material Blue Grey 900 (texto oscuro)
+  StereotypeFontColor #37474F
+}
+
+skinparam usecase {
+' Usando el estilo de 'boundary' de nuestra paleta
+  BackgroundColor #E0F2F1
+  ' Material Teal 50 (verde azulado muy claro)
+  BorderColor #00796B
+  ' Material Teal 700
+  FontColor #004D40
+  ' Teal muy oscuro
+  StereotypeFontColor #004D40
+  ' Para el texto de <<include>>, <<extend>>
+}
+' === FIN DE PALETA ===
+
+' === Directiva de Dirección para el Layout ===
+left to right direction
+
+' === Actor Principal (a la izquierda) ===
+actor Cliente
+
+' === Límite del Sistema (en el centro) ===
+rectangle "Sistema MasterBikes" as SystemBoundary {
+  ' <--- AÑADIDO ALIAS AQUÍ
+  ' Casos de Uso específicos para el Cliente
+  usecase "Iniciar Sesión" as UC_IniciarSesion
+  usecase "Registrarse en el Sistema" as UC_Registrarse
+  usecase "Gestionar Perfil de Usuario" as UC_GestionarPerfil
+  
+  usecase "Solicitar Arriendo de Bicicletas" as UC_SolicitarArriendo
+  usecase "Agendar Reparación" as UC_AgendarReparacion
+  
+  usecase "Ver Estado de Reparación y Despacho" as UC_VerEstado
+  usecase "Consultar Historial de Mantenciones" as UC_ConsultarHistorial
+  
+  usecase "Recibir Promociones" as UC_RecibirPromociones
+}
+
+
+note left of SystemBoundary
+  Este diagrama se enfoca en
+  los Casos de Uso del Cliente.
+end note
+
+
+' === Conexiones Actor - Casos de Uso ===
+Cliente --> UC_IniciarSesion
+Cliente --> UC_Registrarse
+Cliente --> UC_GestionarPerfil
+Cliente --> UC_SolicitarArriendo
+Cliente --> UC_AgendarReparacion
+Cliente --> UC_VerEstado
+Cliente --> UC_ConsultarHistorial
+Cliente --> UC_RecibirPromociones
+
+
+' === Relaciones entre Casos de Uso (<<include>>) ===
+' La mayoría de las acciones requieren que el cliente haya iniciado sesión
+UC_GestionarPerfil ..> UC_IniciarSesion : <<include>>
+UC_SolicitarArriendo ..> UC_IniciarSesion : <<include>>
+UC_AgendarReparacion ..> UC_IniciarSesion : <<include>>
+UC_VerEstado ..> UC_IniciarSesion : <<include>>
+UC_ConsultarHistorial ..> UC_IniciarSesion : <<include>>
+
+
+note right of UC_RecibirPromociones
+  Implica la visualización de promociones
+  en el sistema o la recepción de estas
+  por canales configurados (ej. email)
+  según la regla de negocio 4.3.5.
+end note
+
+@enduml

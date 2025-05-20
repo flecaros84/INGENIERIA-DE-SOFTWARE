@@ -1,0 +1,89 @@
+@startuml CasosDeUso_SupervisorEIntegraciones_MasterBikes
+title Diagrama de Casos de Uso 03: Supervisor e Integraciones del Sistema
+
+' === NUEVA PALETA MATERIAL DESIGN MEJORADA (Aplicada consistentemente) ===
+skinparam backgroundColor #ECEFF1
+skinparam defaultTextAlignment center
+skinparam ArrowColor #1E88E5
+skinparam note {
+  BackgroundColor #FFF9C4
+  BorderColor #FBC02D
+  FontColor #37474F
+  }
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #546E7A
+  FontColor #263238
+  StereotypeFontColor #37474F
+  }
+skinparam actor<<External>> {
+  BackgroundColor #B0BEC5
+  BorderColor #455A64
+  }
+skinparam usecase {
+  BackgroundColor #E0F2F1
+  BorderColor #00796B
+  FontColor #004D40
+  StereotypeFontColor #004D40
+  }
+' === FIN DE PALETA ===
+
+left to right direction
+
+' === Actores ===
+actor Supervisor
+actor "Sistema SHIMANO" as ShimanoAPI <<External>> #LightGrey
+' Se puede añadir un color específico al actor externo si se desea, o tomará el de actor<<External>>
+
+' === Límite del Sistema ===
+rectangle "Sistema MasterBikes" as SystemBoundary {
+  
+  usecase "Iniciar Sesión Supervisor" as UC_LoginSupervisor
+  
+  ' Casos de Uso del Supervisor (SRS 8.1.4)
+  usecase "Generar Reportes" as UC_GenerarReportes
+  ' (Incluye ventas y servicios)
+  usecase "Visualizar Indicadores de Rendimiento" as UC_VerIndicadores
+  usecase "Gestionar Ingreso de Stock" as UC_IngresarStock
+  ' (Asumimos que este es el ingreso general)
+
+  ' Este es un caso de uso interno del sistema que interactúa con SHIMANO,
+  ' probablemente gatillado por un Técnico (desde otro diagrama)
+  usecase "Consultar Stock Externo (SHIMANO)" as UC_ConsultarShimano
+  
+}
+
+' === Conexiones Actor - Casos de Uso ===
+
+Supervisor -- UC_LoginSupervisor
+Supervisor -- UC_GenerarReportes
+Supervisor -- UC_VerIndicadores
+Supervisor -- UC_IngresarStock
+
+' El Sistema MasterBikes (a través de su caso de uso UC_ConsultarShimano) interactúa con el Sistema SHIMANO
+UC_ConsultarShimano -- ShimanoAPI
+note on link
+  El sistema MasterBikes consulta
+  la API de SHIMANO para obtener
+  información de stock/piezas.
+  (Iniciado por Técnico/Vendedor)
+end note
+
+
+' === Relaciones entre Casos de Uso (<<include>>) ===
+UC_GenerarReportes ..> UC_LoginSupervisor : <<include>>
+UC_VerIndicadores ..> UC_LoginSupervisor : <<include>>
+UC_IngresarStock ..> UC_LoginSupervisor : <<include>>
+
+' Si "Consultar Stock Externo (SHIMANO)" fuera iniciado por un caso de uso del Supervisor
+' (lo cual no parece ser el caso principal según SRS), se añadiría aquí.
+' Actualmente, se muestra como una capacidad del sistema que interactúa externamente.
+
+note bottom of SystemBoundary
+  Casos de uso para el Supervisor y la
+  interacción del sistema con proveedores externos.
+  La funcionalidad de notificaciones se modela como
+  <<include>> en los casos de uso que la requieren.
+end note
+
+@enduml
